@@ -9,7 +9,7 @@ namespace Employees.API.Models
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public string IdentityNumber { get; set; }
-        public EGender Gender { get; set; } //Male / Female
+        public string Gender { get; set; } //Male / Female
         public DateTime DateOfBirth { get; set; }
         public DateTime BeginningOfWork { get; set; }
        

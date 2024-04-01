@@ -1,0 +1,31 @@
+.add-employee-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    .scrollable-form {
+      max-height: 500px; /* כאן תוכלי להגדיר גובה מקסימלי עבור הפורם */
+      overflow-y: auto; /* גלילה אנכית רק אם תוכן הפורם עובר את הגובה המקסימלי */
+    }  
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  
+    mat-form-field {
+      width: 80%;
+      margin-bottom: 20px;
+  
+      input {
+        width: 100%;
+      }
+  
+      mat-select {
+        width: 100%;
+      }
+    }
+  
+    button {
+      margin-right: 10px;
+    }
+  }
+  

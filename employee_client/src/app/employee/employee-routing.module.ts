@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { EmployeeListComponent } from './components/employee-list/employee-list.component';
+import { EmployeeScreenComponent } from './components/employee-screen/employee-screen.component';
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
-
 const EMPLOYEE_ROUTES: Route[] = [
   { path: '', redirectTo: 'all', pathMatch: 'full' },
-  { path: 'all', component: EmployeeListComponent },
+  { path: 'all', component: EmployeeScreenComponent },
   { path: 'add', component: AddEmployeeComponent }
 ]
 @NgModule({

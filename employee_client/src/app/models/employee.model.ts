@@ -8,7 +8,6 @@ export class Employee {
     gender: EGender; // Assuming EGender is defined elsewhere (see note below)
     dateOfBirth: Date;
     beginningOfWork: Date;
-    isActive: boolean = true;
     positions?: EmployeePosition[]; // Optional array of EmployeePosition objects
   }
   
@@ -16,4 +15,3 @@ export class Employee {
     Male,
     Female
   }
-  

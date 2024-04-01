@@ -1,1 +1,102 @@
-<p>add-employee works!</p>
+<div class="add-employee-container">
+  <h2>Add New Employee</h2>
+  <form [formGroup]="employeeForm" (ngSubmit)="submit()" class="scrollable-form">
+    
+
+      <!-- First Name -->
+      <mat-form-field appearance="fill">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" placeholder="Enter First Name">
+          <mat-error *ngIf="employeeForm.get('firstName').hasError('required')">First Name is
+              required</mat-error>
+      </mat-form-field>
+
+      <!-- Surname -->
+      <mat-form-field appearance="fill">
+          <mat-label>Surname</mat-label>
+          <input matInput formControlName="surname" placeholder="Enter Surname">
+          <mat-error *ngIf="employeeForm.get('surname').hasError('required')">Surname is
+              required</mat-error>
+      </mat-form-field>
+
+
+
+       <!-- IdentityNumber -->
+      <mat-form-field appearance="fill">
+          <mat-label>IdentityNumber</mat-label>
+          <input matInput formControlName="identityNumber" placeholder="Enter identityNumber">
+          <mat-error *ngIf="employeeForm.get('identityNumber').hasError('required')">IdentityNumber is required</mat-error>
+      </mat-form-field>
+      <!-- Gender -->
+      <mat-form-field appearance="fill">
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="gender" placeholder="Select Gender">
+              <mat-option value="male">Male</mat-option>
+              <mat-option value="female">Female</mat-option>
+          </mat-select>
+          <mat-error *ngIf="employeeForm.get('gender').hasError('required')">Gender is
+              required</mat-error>
+      </mat-form-field>
+
+      <!-- Date of Birth -->
+      <mat-form-field appearance="fill">
+          <mat-label>Date of Birth</mat-label>
+          <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth" placeholder="Enter Date of Birth">
+          <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+          <mat-datepicker #dobPicker></mat-datepicker>
+          <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('required')">Date of Birth is
+              required</mat-error>
+      </mat-form-field>
+
+      <!-- Begging of work -->
+      <mat-form-field appearance="fill">
+          <mat-label>Begging of work date</mat-label>
+          <input matInput [matDatepicker]="workStartDatePicker" formControlName="beginningOfWork"
+              placeholder="Enter Begging of work date">
+          <mat-datepicker-toggle matSuffix [for]="workStartDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #workStartDatePicker></mat-datepicker>
+          <mat-error *ngIf="employeeForm.get('beginningOfWork').hasError('required')">Begging of work date
+              is required</mat-error>
+      </mat-form-field>
+  
+<!-- Positions -->
+<div formArrayName="positions">
+  <div *ngFor="let position of positionsFormArray.controls; let i = index" class="position-container">
+      <div [formGroupName]="i" class="position-form">
+          <h4>Position</h4>
+          <mat-form-field appearance="fill" class="position-field">
+              <mat-label>Position</mat-label>
+              <mat-select formControlName="positionId" placeholder="Select Position" class="position-select">
+                  <mat-option *ngFor="let pos of positions" [value]="pos.id"
+                      [disabled]="isPositionDisabled(pos.id, i)">{{ pos.name }}</mat-option>
+              </mat-select>
+              <mat-error
+                  *ngIf="positionsFormArray.controls[i].get('positionId').hasError('required')">Position is
+                  required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="position-field">
+              <mat-label>Entry Date</mat-label>
+              <input matInput [matDatepicker]="entryDatePicker" formControlName="entryDate"
+                  placeholder="Enter Entry Date" class="position-input">
+              <mat-datepicker-toggle matSuffix [for]="entryDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #entryDatePicker></mat-datepicker>
+              <mat-error *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('required')">Entry
+                  Date is required</mat-error>
+          </mat-form-field>
+
+          <mat-slide-toggle formControlName="isAdministrative" color="primary"
+              class="position-toggle">Administrative</mat-slide-toggle>
+
+          <button mat-icon-button color="warn" (click)="removePositionControl(i)"
+              class="position-delete-button">
+              <mat-icon>delete</mat-icon>
+          </button>
+      </div>
+  </div>
+</div>
+      <button mat-raised-button color="primary" type="button" (click)="addPositionControl()">Add Position</button>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="warn" type="button" (click)="cancel()">Cancel</button>
+  </form>
+</div>

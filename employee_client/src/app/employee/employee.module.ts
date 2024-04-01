@@ -14,13 +14,49 @@ import { MatDialogModule} from '@angular/material/dialog';
 import { DeleteEmployeeComponent } from './components/delete-employee/delete-employee.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { EmployeeScreenComponent } from './components/employee-screen/employee-screen.component';
+import { EmployeeTopBarComponent } from './components/employee-top-bar/employee-top-bar.component';
+import { ExportToExcelComponent } from './components/export-to-excel/export-to-excel.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+
+
+
+
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
+
+import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
+
 @NgModule({
-  declarations: [EmployeeListComponent, AddEmployeeComponent, DeleteEmployeeComponent],
+  declarations: [ExportToExcelComponent,EmployeeListComponent, AddEmployeeComponent, DeleteEmployeeComponent,EmployeeTopBarComponent,EmployeeScreenComponent],
   exports: [CommonModule, EmployeeRoutingModule],
   imports: [
-    CommonModule, MatIconModule,
-    MatTooltipModule, MatDialogModule,
-    MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatSelectModule
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatTooltipModule,
+    MatToolbarModule,
+    EmployeeRoutingModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+  
+  ],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
+    { provide: DateAdapter, useClass: NativeDateAdapter }
   ]
 })
 export class EmployeeModule { }
