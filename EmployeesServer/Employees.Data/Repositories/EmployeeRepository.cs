@@ -16,13 +16,14 @@ namespace Employees.Data.Repositories
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()
+
         {
-            return await _context.Employees.Include(e=>e.Positions).ThenInclude(em=>em.Position).ToListAsync();
+            return await _context.Employees.Where(e => e.IsActive).Include(e=>e.Positions).ThenInclude(em=>em.Position).ToListAsync();
         }
 
         public async Task<Employee> GetEmployeeByIdAsync(int id)
         {
-            return await _context.Employees.Include(e=>e.Positions).ThenInclude(ep=>ep.Position).FirstOrDefaultAsync(e => e.Id == id); ;
+            return await _context.Employees.Include(e=>e.Positions).ThenInclude(ep=>ep.Position).FirstOrDefaultAsync(e => e.Id == id); 
         }
 
         public async Task<Employee> AddEmployeeAsync(Employee employee)

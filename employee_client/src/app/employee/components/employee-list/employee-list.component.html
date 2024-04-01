@@ -1,4 +1,4 @@
-
+<div class="table-container">
 <mat-form-field>
   <mat-label>Filter</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
@@ -7,10 +7,10 @@
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort>
 
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    <!-- IdentityNumber Column -->
+    <ng-container matColumnDef="identityNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Identity Number </th>
+      <td mat-cell *matCellDef="let row"> {{row.identityNumber}} </td>
     </ng-container>
 
     <!-- First Name Column -->
@@ -25,41 +25,37 @@
       <td mat-cell *matCellDef="let row"> {{row.surname}} </td>
     </ng-container>
 
-    <!-- Identity Number Column -->
-    <ng-container matColumnDef="identityNumber">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Identity Number </th>
-      <td mat-cell *matCellDef="let row"> {{row.identityNumber}} </td>
+
+    <!-- BeginningOfWork Column -->
+    <ng-container matColumnDef="beginningOfWork">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Beginning of work </th>
+      <td mat-cell *matCellDef="let row"> {{row.beginningOfWork | date: 'dd/MM/yyyy'}} </td>
     </ng-container>
 
-    <!-- Date of Birth Column -->
-    <ng-container matColumnDef="dateOfBirth">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date of Birth </th>
-      <td mat-cell *matCellDef="let row"> {{row.dateOfBirth}} </td>
-    </ng-container>
-
- <!-- Beginning of work Column -->
- <ng-container matColumnDef="beginningOfWork">
-  <th mat-header-cell *matHeaderCellDef mat-sort-header> Beginning of work </th>
-  <td mat-cell *matCellDef="let row"> {{row.beginningOfWork}} </td>
-</ng-container>
-
-
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let row" class="actions-cell">
+          <div>
+            <button mat-icon-button color="primary" matTooltip="edit" (click)="editEmployee(row)">
+             <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="primary"matTooltip="delete" mat-icon-button (click)="deleteEmployee(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      <td class="mat-cell" colspan="8">No data matching the filter "{{input.value}}"</td>
     </tr>
   </table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </div>
-
-
-
-
-
-
-
+</div>
