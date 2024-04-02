@@ -1,4 +1,5 @@
-﻿using Employees.Core.Entities;
+﻿using Employees.Core.DTOs;
+using Employees.Core.Entities;
 using Employees.Core.Repositories;
 using Employees.Core.Services;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,17 @@ namespace Employees.Data.Repositories
         public async Task<Employee> UpdateEmployeeAsync(Employee employee)
         {
             var updatedEmployee = await GetEmployeeByIdAsync(employee.Id);
-            _context.Entry(updatedEmployee).CurrentValues.SetValues(employee);
+            if (updatedEmployee != null)
+            {
+                updatedEmployee.FirstName=employee.FirstName;
+                updatedEmployee.Surname = employee.Surname;
+                updatedEmployee.IdentityNumber = updatedEmployee.IdentityNumber;
+                updatedEmployee.Gender=employee.Gender;
+                updatedEmployee.DateOfBirth=employee.DateOfBirth;
+                updatedEmployee.BeginningOfWork=employee.BeginningOfWork;
+
+            }
+           // _context.Entry(updatedEmployee).CurrentValues.SetValues(employee);
             //עדכון רשימת התפקידים
             foreach (var newPosition in employee.Positions)
             {
@@ -61,7 +72,11 @@ namespace Employees.Data.Repositories
             await _context.SaveChangesAsync();
             return updatedEmployee;
         }
-        public async Task DeleteEmployeeAsync(int id)
+
+
+
+
+public async Task DeleteEmployeeAsync(int id)
         {
             var employee = await GetEmployeeByIdAsync(id);
             employee.IsActive = false;

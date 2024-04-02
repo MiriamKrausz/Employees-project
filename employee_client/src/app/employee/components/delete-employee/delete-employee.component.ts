@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmployeeService } from '../../employee.service';
-import { Employee } from '../../../models/employee.model';
+import { Employee } from '../../../../models/employee.model';
 @Component({
   selector: 'app-delete-employee',
   templateUrl: './delete-employee.component.html',
@@ -12,13 +12,11 @@ export class DeleteEmployeeComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DeleteEmployeeComponent>,
-    @Inject(MAT_DIALOG_DATA) data: { employee: Employee },private employeeService: EmployeeService
-  ) 
-  {this.employee = data.employee;}
+    @Inject(MAT_DIALOG_DATA) data: { employee: Employee },private _employeeService: EmployeeService){this.employee = data.employee;}
 
   onConfirmDelete(): void {
     this.dialogRef.close(true);
-    this.employeeService.deleteEmployee(this.employee.id)
+    this._employeeService.deleteEmployee(this.employee.id)
     .subscribe(() => {
       console.log("success");
       
@@ -26,7 +24,6 @@ export class DeleteEmployeeComponent {
       console.error('Error deleting employee:', error);
     });
     console.log("deleted");     
-    window.location.reload();
   }
 
   onCancel(): void {

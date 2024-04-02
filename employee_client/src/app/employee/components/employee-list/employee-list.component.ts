@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { EmployeeService } from '../../employee.service';
-import { Employee } from '../../../models/employee.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { EmployeeService } from '../../employee.service';
+import { Employee } from '../../../../models/employee.model';
 import { DeleteEmployeeComponent } from '../delete-employee/delete-employee.component';
+import { EditComponent } from '../../../edit/edit.component';
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
@@ -25,9 +26,8 @@ export class EmployeeListComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private _employeeService: EmployeeService, public dialog: MatDialog) { }
-  ngAfterViewInit() {
-    this.getEmployees();
-  }
+  ngAfterViewInit() {this.getEmployees();}
+      
   getEmployees(): void {
     this._employeeService.getAllEmployees().subscribe({
       next: (res: Employee[]) => {
@@ -45,13 +45,30 @@ export class EmployeeListComponent implements AfterViewInit {
   }
 
   editEmployee(employee: Employee): void {
-    // Add your edit logic here
-    console.log('Edit employee: ', employee);
+    const dialogRef = this.dialog.open(EditComponent, {
+      width:'500px',
+      data: { employee }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.employees = this.employees.filter(emp => emp.id !== employee.id);
+        this.dataSource = new MatTableDataSource(this.employees);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    });
   }
-
   deleteEmployee(employee: Employee): void {
     const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
       data: { employee }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.employees = this.employees.filter(emp => emp.id !== employee.id);
+        this.dataSource = new MatTableDataSource(this.employees);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
     });
   }
   applyFilter(event: Event) {
@@ -62,3 +79,6 @@ export class EmployeeListComponent implements AfterViewInit {
     }
   }  
 }
+
+
+

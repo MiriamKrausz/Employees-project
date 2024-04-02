@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as XLSX from 'xlsx'; // Importing xlsx library for Excel manipulation
 import { saveAs } from 'file-saver'; // Importing file-saver library for file download
-import { Employee } from '../models/employee.model';
+import { Employee } from '../../models/employee.model';
 
 @Injectable({
   providedIn: 'root'

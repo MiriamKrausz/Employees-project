@@ -38,52 +38,58 @@ namespace Employees.API.Controllers
         {
             var employee = await _employeeService.GetEmployeeByIdAsync(id);
             if (employee is null)
-                return NotFound();
+                return NotFound("Employee not found.");
             return Ok(_mapper.Map<EmployeeDto>(employee));
         }
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] EmployeePostModel employee)
         {
-            // בדיקה אם הערך של המין (Gender) תקין
-            //if (!Enum.IsDefined(typeof(EGender), employee.Gender))
-            //{
-            //    return BadRequest("Invalid gender value.");
-            //}
+            if (employee.IdentityNumber.Length != 9)
+            {
+                return BadRequest("Identity number must be 9 characters long.");
+            }
+
+            // בדיקת תקינות תאריך הלידה
+            if (employee.DateOfBirth >= DateTime.Today)
+            {
+                return BadRequest("Date of birth cannot be in the future.");
+            }
             var employeeToAdd = _mapper.Map<Employee>(employee);
             employeeToAdd.Positions = new List<EmployeePosition>();
             foreach(var position in employee.Positions)
             {
                 Position pos = await _positionService.GetPositionByIdAsync(position.PositionId);
                 EmployeePosition employeePosition=_mapper.Map<EmployeePosition>(position);
-              // employeePosition.EmployeeId = employeeToAdd.Id;
+ 
                 employeePosition.Position = pos;
                 employeeToAdd.Positions.Add(employeePosition);
-               // position.EmployeeId = employeeToAdd.Id;
+
             }
             await _employeeService.AddEmployeeAsync(employeeToAdd);
             return Ok(_mapper.Map<EmployeeDto>(employeeToAdd));
         }
         // PUT api/<EmployeesController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] EmployeePutModel employee)
+        public async Task<ActionResult> Put(int id, [FromBody] EmployeePostModel employee)
         {
             var employeeToUpdate = await _employeeService.GetEmployeeByIdAsync(id);
             if (employeeToUpdate is null)
             {
                 return NotFound();
             }
-            // בדיקה אם הערך של המין (Gender) תקין
-            //if (!Enum.IsDefined(typeof(EGender), employee.Gender))
-            //{
-            //    return BadRequest("Invalid gender value.");
-            //}
+            if (employee.IdentityNumber.Length != 9)
+            {
+                return BadRequest("Identity number must be 9 characters long.");
+            }
+
+            // בדיקת תקינות תאריך הלידה
+            if (employee.DateOfBirth >= DateTime.Today)
+            {
+                return BadRequest("Date of birth cannot be in the future.");
+            }
             _mapper.Map(employee, employeeToUpdate);
-            //foreach (var position in employeeToUpdate.Positions)
-            //{
-            //    // Set the EmployeeId for each position
-            //    position.EmployeeId = employeeToUpdate.Id;
-            //}
+
             await _employeeService.UpdateEmployeeAsync(employeeToUpdate);
             var returnEmployee = await _employeeService.GetEmployeeByIdAsync(id);
             return Ok(_mapper.Map<EmployeeDto>(returnEmployee));

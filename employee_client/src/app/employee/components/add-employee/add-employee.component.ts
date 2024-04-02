@@ -1,10 +1,11 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Position } from '../../../models/position.medel';
+import { FormArray, FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Position } from '../../../../models/position.medel';
 import { EmployeeService } from '../../employee.service';
 import { PositionService } from '../../../position/position.service';
+import { Employee } from '../../../../models/employee.model';
 
 @Component({
   selector: 'app-add-employee',
@@ -17,8 +18,8 @@ export class AddEmployeeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddEmployeeComponent>,
-    private employeeService: EmployeeService,
-    private positionService: PositionService
+    private _employeeService: EmployeeService,
+    private _positionService: PositionService
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +46,7 @@ export class AddEmployeeComponent implements OnInit {
 
   loadPositions(): void {
     console.log('Before loading positions');
-    this.positionService.getAllPositions().subscribe(positions => {
+    this._positionService.getAllPositions().subscribe(positions => {
       console.log('Positions loaded successfully:', positions);
       this.positions = positions;
       this.addPositionControl(); // Add initial empty position
@@ -75,10 +76,17 @@ export class AddEmployeeComponent implements OnInit {
     if (this.employeeForm.valid) {
       const formData = this.employeeForm.value;
       console.log("formData", formData);
-
-      this.employeeService.addEmployee(formData).subscribe(() => {
+      this._employeeService.addEmployee(formData).subscribe(() => {
         console.error('saving');
-        this.dialogRef.close(); // Handle success, e.g., close dialog
+        this.dialogRef.close();
+
+
+       
+
+
+
+       
+        // Handle success, e.g., close dialog
       }, error => {
         console.error('Error adding employee:', error);
         // Display server validation errors

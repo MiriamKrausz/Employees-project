@@ -12,8 +12,11 @@ export class EmployeeTopBarComponent {
   constructor(public dialog: MatDialog,private _employeeService: EmployeeService){}
   addEmployee(): void {
     const dialogRef = this.dialog.open(AddEmployeeComponent, { width: '500px',});
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
-  DownloadToexcel(): void {
+  downloadToexcel(): void {
     this._employeeService.exportEmployeesToExcel().subscribe({
       next: () => {
         console.log("Download completed");
