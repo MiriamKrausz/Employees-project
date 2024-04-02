@@ -9,8 +9,7 @@ export class Employee {
     dateOfBirth: Date;
     beginningOfWork: Date;
     positions?: EmployeePosition[]; // Optional array of EmployeePosition objects
-  }
-  
+  } 
   export enum EGender {
     Male,
     Female

@@ -29,7 +29,7 @@ export class EmployeeListComponent implements AfterViewInit {
     this.getEmployees();
   }
   getEmployees(): void {
-    this._employeeService.getAllEmployess().subscribe({
+    this._employeeService.getAllEmployees().subscribe({
       next: (res: Employee[]) => {
         this.employees = res;
         console.log("Employees fetched successfully:");
@@ -54,29 +54,11 @@ export class EmployeeListComponent implements AfterViewInit {
       data: { employee }
     });
   }
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filter = filterValue;
-  
-    // הגדרת פונקציית הסינון
-    this.dataSource.filterPredicate = (data: Employee, filter: string) => {
-      const searchString = filterValue.toLowerCase();
-      return data.identityNumber.toLowerCase().includes(searchString) ||
-             data.firstName.toLowerCase().includes(searchString) ||
-             data.surname.toLowerCase().includes(searchString) ||
-             new Date(data.beginningOfWork).toLocaleDateString('en-GB').includes(searchString);
-    };
-  
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-  
+  }  
 }
