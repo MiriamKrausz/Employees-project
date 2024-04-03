@@ -43,7 +43,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatTooltipModule,
     MatToolbarModule,
     EmployeeRoutingModule,
-    CommonModule,
     ReactiveFormsModule,
     MatCheckboxModule,
     MatDatepickerModule,

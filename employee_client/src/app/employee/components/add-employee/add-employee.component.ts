@@ -5,7 +5,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Position } from '../../../../models/position.medel';
 import { EmployeeService } from '../../employee.service';
 import { PositionService } from '../../../position/position.service';
-import { Employee } from '../../../../models/employee.model';
 
 @Component({
   selector: 'app-add-employee',
@@ -42,8 +41,6 @@ export class AddEmployeeComponent implements OnInit {
   get positionsFormArray(): FormArray {
     return this.employeeForm.get('positions') as FormArray;
   }
-
-
   loadPositions(): void {
     console.log('Before loading positions');
     this._positionService.getAllPositions().subscribe(positions => {
@@ -77,15 +74,8 @@ export class AddEmployeeComponent implements OnInit {
       const formData = this.employeeForm.value;
       console.log("formData", formData);
       this._employeeService.addEmployee(formData).subscribe(() => {
-        console.error('saving');
-        this.dialogRef.close();
-
-
-       
-
-
-
-       
+        console.log('saving');
+        this.dialogRef.close(true);    
         // Handle success, e.g., close dialog
       }, error => {
         console.error('Error adding employee:', error);

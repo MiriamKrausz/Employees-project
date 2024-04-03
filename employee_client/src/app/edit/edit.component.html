@@ -31,9 +31,8 @@
             <mat-form-field appearance="fill">
                 <mat-label>Gender</mat-label>
                 <mat-select formControlName="gender" placeholder="Select Gender">
-                    <mat-option [value]="data.employee.gender">{{ data.employee.gender }}</mat-option>
-                    <mat-option value="male">Male</mat-option>
-                    <mat-option value="female">Female</mat-option>
+                    <mat-option value="Male">Male</mat-option>
+                    <mat-option value="Female">Female</mat-option>
                 </mat-select>
                 <mat-error *ngIf="employeeForm.get('gender').hasError('required')">Gender is required</mat-error>
             </mat-form-field>
@@ -80,6 +79,7 @@
                                     <mat-option *ngFor="let pos of positions" [value]="pos.id"
                                         [disabled]="isPositionDisabled(pos.id, i)">{{ pos.name }}</mat-option>
                                 </mat-select>
+                     
                                 <mat-error
                                     *ngIf="positionsFormArray.controls[i].get('positionId').hasError('required')">Position
                                     is required</mat-error>

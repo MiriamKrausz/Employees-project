@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddEmployeeComponent } from '../add-employee/add-employee.component';
 import { EmployeeService } from '../../employee.service';
 
+
 @Component({
   selector: 'app-employee-top-bar',
   templateUrl: './employee-top-bar.component.html',
@@ -13,6 +14,8 @@ export class EmployeeTopBarComponent {
   addEmployee(): void {
     const dialogRef = this.dialog.open(AddEmployeeComponent, { width: '500px',});
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
       console.log('The dialog was closed');
     });
   }

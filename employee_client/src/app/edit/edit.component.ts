@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, V
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee } from '../../models/employee.model';
 import { EmployeeService } from '../employee/employee.service';
-import { MatDialogContent } from '@angular/material/dialog'; // Import MatDialogContent
+import { MatDialogContent } from '@angular/material/dialog'; 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -35,7 +35,7 @@ export class EditComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { employee: Employee },
-    private employeeService: EmployeeService,
+    private _employeeService: EmployeeService,
     private _positionService: PositionService,
     private _snackBar: MatSnackBar
   ) { }
@@ -55,19 +55,18 @@ export class EditComponent implements OnInit {
         dateOfBirth: [employee.dateOfBirth, [Validators.required, this.validateDateOfBirth]],
         beginningOfWork: [employee.beginningOfWork, Validators.required],
         positions: this.fb.array([]) // Initialize positions array, modify if necessary
-    });
- 
+    });     
+   
     // Initialize positions controls with default values
     if (employee.positions && employee.positions.length > 0) {
       employee.positions.forEach(position => {
-        this.addPositionControl(position.positionId, position.isAdministrative, position.entryDate);
+        this.addPositionControl(position.position.id,position.isAdministrative, position.entryDate);
       });
     } else {
       // Add default position if there are no positions
       this.addPositionControl();
     }
-  }
-
+  }  
   validateDateOfBirth(control: AbstractControl): ValidationErrors | null {
     const currentDate = new Date();
     const birthDate = new Date(control.value);  
@@ -89,8 +88,9 @@ export class EditComponent implements OnInit {
     });
   }
 
-  addPositionControl(positionId: number = null, isAdministrative: boolean = false, entryDate: Date = null): void {
-    this.positionsFormArray.push(this.fb.group({
+  addPositionControl(positionId: number =null, isAdministrative: boolean = false, entryDate: Date = null): void {
+     console.log(positionId, isAdministrative, entryDate); 
+    this.positionsFormArray.push(this.fb.group({       
       positionId: [positionId, Validators.required],
       isAdministrative: [isAdministrative, Validators.required],
       entryDate: [entryDate, Validators.required]
@@ -110,20 +110,22 @@ export class EditComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  
+
 submit(): void {
     if (this.employeeForm.valid) {
         const employeeId = this.data.employee.id;
-        this.employeeService.getEmployeeById(employeeId).subscribe((employee: Employee) => {
+        this._employeeService.getEmployeeById(employeeId).subscribe((employee: Employee) => {
             const updatedEmployee = {
                 ...employee,
                 ...this.employeeForm.value
             };
-            this.employeeService.updateEmployee(updatedEmployee).subscribe(() => {
+            this._employeeService.updateEmployee(updatedEmployee).subscribe(() => {
                 console.log('Employee updated successfully');
                 this._snackBar.open('Object updated successfully', 'Close', {
                     duration: 3000, // Set the duration for the snack-bar message
                 });
-                this.dialogRef.close();
+                this.dialogRef.close(true);
             }, error => {
                 console.error('Error updating employee:', error);
             });
@@ -137,3 +139,7 @@ submit(): void {
 }
 
 }
+
+
+
+

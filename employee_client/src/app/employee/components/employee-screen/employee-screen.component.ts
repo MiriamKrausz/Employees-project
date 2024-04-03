@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrl: './employee-screen.component.scss'
 })
 export class EmployeeScreenComponent {
-
 }

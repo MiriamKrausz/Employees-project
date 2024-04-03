@@ -13,7 +13,7 @@ import { EditComponent } from '../../../edit/edit.component';
   styleUrls: ['./employee-list.component.scss']
 })
 export class EmployeeListComponent implements AfterViewInit {
-  employees: Employee[] = [];
+ employees: Employee[] = [];
   displayedColumns: string[] = [
     'firstName',
     'surname',
@@ -26,14 +26,13 @@ export class EmployeeListComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private _employeeService: EmployeeService, public dialog: MatDialog) { }
-  ngAfterViewInit() {this.getEmployees();}
+  ngAfterViewInit() {this.getEmployees();}  
       
   getEmployees(): void {
     this._employeeService.getAllEmployees().subscribe({
       next: (res: Employee[]) => {
-        this.employees = res;
+       this.employees = res;
         console.log("Employees fetched successfully:");
-        console.log(this.employees);
         this.dataSource = new MatTableDataSource(this.employees);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -51,10 +50,7 @@ export class EmployeeListComponent implements AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.employees = this.employees.filter(emp => emp.id !== employee.id);
-        this.dataSource = new MatTableDataSource(this.employees);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+           this.getEmployees();
       }
     });
   }
@@ -64,10 +60,7 @@ export class EmployeeListComponent implements AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.employees = this.employees.filter(emp => emp.id !== employee.id);
-        this.dataSource = new MatTableDataSource(this.employees);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.getEmployees();
       }
     });
   }
@@ -78,6 +71,7 @@ export class EmployeeListComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }  
+
 }
 
 

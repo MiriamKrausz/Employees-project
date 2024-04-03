@@ -9,7 +9,6 @@ import { Employee } from '../../models/employee.model';
   providedIn: 'root'
 })
 export class EmployeeService {
-
   public baseUrl = "https://localhost:7109/api/Employees";
   constructor(private http: HttpClient) {
   }
@@ -32,7 +31,29 @@ export class EmployeeService {
   exportEmployeesToExcel(): Observable<any> {
     return new Observable(observer => {
       this.getAllEmployees().subscribe((employees: Employee[]) => {
-        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(employees);
+        const formattedEmployees = employees.flatMap(employee => {
+          const employeeData: any = {
+            'Employee ID': employee.id,
+            'First Name': employee.firstName,
+            'Surname': employee.surname,
+            'Identity Number': employee.identityNumber,
+            'Gender': employee.gender,
+            'Date of Birth': this.formatDate(employee.dateOfBirth),
+            'Beginning of Work': this.formatDate(employee.beginningOfWork)
+          };
+          const positionData = employee.positions.map(position => ({
+            'Position ID': position.position.id,
+            'Position Name': position.position.name,
+            'Administrative': position.isAdministrative ? 'Yes' : 'No',
+            'Entry Date': this.formatDate(position.entryDate)
+          }));
+          if (positionData.length > 1) {
+            return positionData.map((position, index) => index === 0 ? { ...employeeData, ...position } : position);
+          } else {
+            return { ...employeeData, ...positionData[0] };
+          }
+        });
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedEmployees);
         const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
         const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
         const now = new Date();
@@ -47,4 +68,21 @@ export class EmployeeService {
       });
     });
   }
+
+  // פונקציה לפורמט תאריך
+  private formatDate(date: Date): string {
+    const dateObj = new Date(date);
+    const day = dateObj.getDate();
+    const month = dateObj.getMonth() + 1;
+    const year = dateObj.getFullYear();
+  
+    return `${day}/${month}/${year}`;
+  }
+  
 }
+  
+
+
+  
+
+

@@ -10,9 +10,3 @@ export class Employee {
     beginningOfWork: Date;
     positions?: EmployeePosition[];
   } 
-  export enum EGender {
-    Male,
-    Female
-  }
-
-
