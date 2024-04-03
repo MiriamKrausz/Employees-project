@@ -1,10 +1,20 @@
-import { Routes } from '@angular/router';
-import { NotFoundComponent } from './not-found/not-found.component';
+
+
+
+
+import {Routes } from '@angular/router';
+
+
+
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { TopBarComponent } from './components/top-bar/top-bar.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'employee', pathMatch: 'full' },
-    //{ path: 'home', loadChildren: () => import('../app/employee/employee.module').then(c => c.EmployeeModule) },
-    { path: 'employee', loadChildren: () => import('../app/employee/employee.module').then(c => c.EmployeeModule) },
-    { path: 'position', loadChildren: () => import('../app/position/position.module').then(c => c.PositionModule) },
-    { path: '**', component: NotFoundComponent }
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  // { path: 'employees', component: EmployeeListComponent },
+  { path: 'home', component: TopBarComponent},
+//   { path: 'add', component: AddEmployeeComponent },
+  { path: '**', component: NotFoundComponent }
 ];
+
+
