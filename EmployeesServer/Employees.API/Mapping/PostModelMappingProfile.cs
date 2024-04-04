@@ -5,10 +5,10 @@ using System;
 
 namespace Employees.API.Mapping
 {
-    public class ModelMappingProfile : Profile
+    public class PostModelMappingProfile : Profile
     {
 
-        public ModelMappingProfile()
+        public PostModelMappingProfile()
         {
             CreateMap<PositionPostModel, Position>();
 

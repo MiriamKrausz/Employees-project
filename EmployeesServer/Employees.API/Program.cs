@@ -5,6 +5,9 @@ using Employees.Core.Services;
 using Employees.Data;
 using Employees.Data.Repositories;
 using Employees.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +38,30 @@ builder.Services.AddDbContext<DataContext>();
 
 
 //AutoMapper injection
-builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(ModelMappingProfile));
+builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(PostModelMappingProfile));
+
+
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+        };
+    });
+
 
 var app = builder.Build();
 

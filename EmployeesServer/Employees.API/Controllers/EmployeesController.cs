@@ -16,7 +16,6 @@ namespace Employees.API.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly IPositionService _positionService;
         private readonly IMapper _mapper;
-
         public EmployeesController(IEmployeeService employeeService, IMapper mapper, IPositionService positionService)
         {
             _employeeService = employeeService;
