@@ -142,3 +142,4 @@ D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.API\obj\Debug\
 D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.API\obj\Debug\net6.0\ref\Employees.API.dll
 D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.API\bin\Debug\net6.0\Newtonsoft.Json.dll

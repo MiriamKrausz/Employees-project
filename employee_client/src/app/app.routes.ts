@@ -7,12 +7,12 @@ import {Routes } from '@angular/router';
 
 
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  // { path: 'employees', component: EmployeeListComponent },
-  { path: 'home', component: TopBarComponent},
+  { path: 'home', component: EmployeeListComponent },
+  // { path: 'home', component: TopBarComponent},
 //   { path: 'add', component: AddEmployeeComponent },
   { path: '**', component: NotFoundComponent }
 ];

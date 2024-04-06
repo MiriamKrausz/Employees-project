@@ -5,8 +5,6 @@ using Employees.Core.Entities;
 using Employees.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Employees.API.Controllers
 {
     [Route("api/[controller]")]
@@ -44,15 +42,14 @@ namespace Employees.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] EmployeePostModel employee)
         {
-            if (employee.IdentityNumber.Length != 9)
+            // Check if the IdentityNumber already exists
+            var employees = await _employeeService.GetEmployeesAsync();
+            foreach (var existingEmployee in employees)
             {
-                return BadRequest("Identity number must be 9 characters long.");
-            }
-
-            // בדיקת תקינות תאריך הלידה
-            if (employee.DateOfBirth >= DateTime.Today)
-            {
-                return BadRequest("Date of birth cannot be in the future.");
+                if (existingEmployee.IdentityNumber == employee.IdentityNumber)
+                {
+                    return BadRequest($"Employee with identity number {employee.IdentityNumber} already exists.");
+                }
             }
             var employeeToAdd = _mapper.Map<Employee>(employee);
             employeeToAdd.Positions = new List<EmployeePosition>();
@@ -60,10 +57,8 @@ namespace Employees.API.Controllers
             {
                 Position pos = await _positionService.GetPositionByIdAsync(position.PositionId);
                 EmployeePosition employeePosition=_mapper.Map<EmployeePosition>(position);
- 
                 employeePosition.Position = pos;
                 employeeToAdd.Positions.Add(employeePosition);
-
             }
             await _employeeService.AddEmployeeAsync(employeeToAdd);
             return Ok(_mapper.Map<EmployeeDto>(employeeToAdd));
@@ -77,18 +72,7 @@ namespace Employees.API.Controllers
             {
                 return NotFound();
             }
-            if (employee.IdentityNumber.Length != 9)
-            {
-                return BadRequest("Identity number must be 9 characters long.");
-            }
-
-            // בדיקת תקינות תאריך הלידה
-            if (employee.DateOfBirth >= DateTime.Today)
-            {
-                return BadRequest("Date of birth cannot be in the future.");
-            }
             _mapper.Map(employee, employeeToUpdate);
-
             await _employeeService.UpdateEmployeeAsync(employeeToUpdate);
             var returnEmployee = await _employeeService.GetEmployeeByIdAsync(id);
             return Ok(_mapper.Map<EmployeeDto>(returnEmployee));

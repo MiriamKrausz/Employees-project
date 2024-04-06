@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-
 @Component({
   selector: 'app-delete-employee',
   standalone: true,
@@ -24,8 +23,7 @@ export class DeleteEmployeeComponent {
     this.dialogRef.close(true);
     this._employeeService.deleteEmployee(this.employee.id)
     .subscribe(() => {
-      console.log("success");
-      
+      console.log("success");     
     }, (error) => {
       console.error('Error deleting employee:', error);
     });

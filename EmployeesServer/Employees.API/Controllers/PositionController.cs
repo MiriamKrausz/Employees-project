@@ -5,8 +5,6 @@ using Employees.Core.Entities;
 using Employees.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Employees.API.Controllers
 {
     [Route("api/[controller]")]
@@ -21,7 +19,6 @@ namespace Employees.API.Controllers
             _positionService = positionService;
             _mapper = mapper;
         }
-
 
 
         // GET: api/<EmployeesController>

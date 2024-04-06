@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl,AsyncValidatorFn, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee } from '../../models/employee.model';
 import { EmployeeService } from '../../services/employee.service';
@@ -19,7 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter} from '@angular/material/core';
-
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -56,9 +56,9 @@ export class EditEmployeeComponent {
     this.employeeForm = this.fb.group({
         firstName: [employee.firstName, Validators.required],
         surname: [employee.surname, Validators.required],
-        identityNumber: [employee.identityNumber, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+        identityNumber: [employee.identityNumber],
         gender: [employee.gender, Validators.required],
-        dateOfBirth: [employee.dateOfBirth, [Validators.required, this.validateDateOfBirth]],
+        dateOfBirth: [employee.dateOfBirth, [Validators.required, this.ageValidator]],
         beginningOfWork: [employee.beginningOfWork, Validators.required],
         positions: this.fb.array([]) // Initialize positions array, modify if necessary
     });     
@@ -73,18 +73,38 @@ export class EditEmployeeComponent {
       this.addPositionControl();
     }
   }  
-  validateDateOfBirth(control: AbstractControl): ValidationErrors | null {
-    const currentDate = new Date();
-    const birthDate = new Date(control.value);  
-    if (birthDate >= currentDate) {
-      return { 'invalidDateOfBirth': true };
-    }
-    return null;
-  }
+
 
   get positionsFormArray(): FormArray {
     return this.employeeForm.get('positions') as FormArray;
   }
+
+  ageValidator(control: AbstractControl): ValidationErrors | null {
+    const birthDate = new Date(control.value);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    if (age < 18) {
+      return { underage: true };
+    }
+    return null;
+  }
+
+
+  entryDateValidator: AsyncValidatorFn = (control: AbstractControl): Observable<ValidationErrors | null> => {
+    return new Observable(observer => {
+      setTimeout(() => {
+        const entryDate = new Date(control.value);
+        const beginningOfWork = new Date(this.employeeForm.get('beginningOfWork').value);
+        if (entryDate < beginningOfWork) {
+          observer.next({ invalidEntryDate: true });
+        } else {
+          observer.next(null);
+        }
+        observer.complete();
+      }, 0);
+    });
+  };
+
 
   loadPositions(): void {
     this._positionService.getAllPositions().subscribe(positions => {
@@ -99,7 +119,7 @@ export class EditEmployeeComponent {
     this.positionsFormArray.push(this.fb.group({       
       positionId: [positionId, Validators.required],
       isAdministrative: [isAdministrative, Validators.required],
-      entryDate: [entryDate, Validators.required]
+      entryDate: [entryDate, Validators.required,this.entryDateValidator]
     }))
   }
 
@@ -145,7 +165,3 @@ submit(): void {
 }
 
 }
-
-
-
-

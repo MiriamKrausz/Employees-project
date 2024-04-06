@@ -1,7 +1,9 @@
 
+
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup,Validators } from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, FormArray, FormBuilder, FormGroup,ValidationErrors,Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Observable} from 'rxjs';
 import { Position } from '../../models/position.medel';
 import { EmployeeService } from '../../services/employee.service';
 import { PositionService } from '../../services/position.service';
@@ -18,6 +20,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 @Component({
   selector: 'app-add-employee',
   standalone: true,
@@ -32,6 +35,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 export class AddEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   positions: Position[] = [];
+  errors: string[] = [];
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddEmployeeComponent>,
@@ -46,37 +51,78 @@ export class AddEmployeeComponent implements OnInit {
 
   initializeForm(): void {
     this.employeeForm = this.fb.group({
-      firstName: ['', Validators.required],
-      surname: ['', Validators.required],
-      identityNumber: ['', Validators.required],
-      gender: ['', Validators.required],
-      dateOfBirth: ['', Validators.required],
-      beginningOfWork: ['', Validators.required],
-      positions: this.fb.array([], Validators.required)
+        firstName: ['', Validators.required],
+        surname: ['', Validators.required],
+        identityNumber: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+        gender: ['', Validators.required],
+        dateOfBirth: ['', Validators.required,this.dateOfBirthValidator],
+        beginningOfWork: ['', Validators.required],
+        positions: this.fb.array([], Validators.required)
     });
-  }
+}
+addPositionControl(positionId: number = null): void {
+  this.positionsFormArray.push(this.fb.group({
+    positionId: [positionId, Validators.required],
+    isAdministrative: [false, Validators.required],
+    entryDate: ['', Validators.required,this.entryDateValidator()]
+  }));
+}
+
+ 
+  dateOfBirthValidator: AsyncValidatorFn = (control: AbstractControl): Observable<ValidationErrors | null> => {
+    return new Observable(observer => {
+        setTimeout(() => {
+            const dateOfBirth = new Date(control.value);
+            const today = new Date();
+            const age = today.getFullYear() - dateOfBirth.getFullYear();
+            if (age < 18) {
+                observer.next({ underage: true });
+            } else {
+                observer.next(null);
+            }
+            observer.complete();
+        }, 0);
+    });
+};
+
+entryDateValidator() {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const entryDate = new Date(control.value);
+    const beginningOfWork = new Date(this.employeeForm.get('beginningOfWork').value);
+    return entryDate >= beginningOfWork ? null : { 'entryDateInvalid': true };
+  };
+}
+  // entryDateValidator: AsyncValidatorFn = (control: AbstractControl): Observable<ValidationErrors | null> => {
+  //   return new Observable(observer => {
+  //     setTimeout(() => {
+  //       const entryDate = new Date(control.value);
+  //       const beginningOfWork = new Date(this.employeeForm.get('beginningOfWork').value);
+  //       if (entryDate < beginningOfWork) {
+  //         observer.next({ invalidEntryDate: true });
+  //       } else {
+  //         observer.next(null);
+  //       }
+  //       observer.complete();
+  //     }, 0);
+  //   });
+  // };
+
 
   get positionsFormArray(): FormArray {
     return this.employeeForm.get('positions') as FormArray;
   }
+
   loadPositions(): void {
-    console.log('Before loading positions');
     this._positionService.getAllPositions().subscribe(positions => {
-      console.log('Positions loaded successfully:', positions);
       this.positions = positions;
       this.addPositionControl(); // Add initial empty position
-    }, error => {
-      console.error('Error loading positions:', error);
     });
   }
 
-  addPositionControl(positionId: number = null): void {
-    this.positionsFormArray.push(this.fb.group({
-      positionId: [positionId, Validators.required],
-      isAdministrative: [false, Validators.required],
-      entryDate: ['', Validators.required]
-    }));
-  }
+ 
+
+
+
 
   removePositionControl(index: number): void {
     this.positionsFormArray.removeAt(index);
@@ -94,10 +140,11 @@ export class AddEmployeeComponent implements OnInit {
       this._employeeService.addEmployee(formData).subscribe(() => {
         console.log('saving');
         this.dialogRef.close(true);    
-        // Handle success, e.g., close dialog
       }, error => {
+        if (error.status === 400) {
+          this.errors = error.error.errors;
+        }
         console.error('Error adding employee:', error);
-        // Display server validation errors
         console.log('Server validation errors:', error.error.errors);
       });
     } else {
@@ -109,6 +156,18 @@ export class AddEmployeeComponent implements OnInit {
   cancel(): void {
     this.dialogRef.close();
   }
-  
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

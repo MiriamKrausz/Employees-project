@@ -1,34 +1,28 @@
 .example-spacer {
     flex: 1 1 auto;
   }
+  .githubImg{
+    width:40px;
+    height:40px;
+  }
 
+  .ex{
+    border: 2px solid pink;
+  }
+.example-container {
+  width: 500px;
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
 
-  .table-container {
-    width: 60%; /* רוחב הטבלה יהיה 60% מהאב בו היא מוצגת */
-    // height: 60vh; /* גובה הטבלה יהיה 60% מגובה החלון הצפוי */
-    overflow: auto; /* אם הטבלה יוצרת יתרון, יוצגו מקפים */
-    margin: auto; /* הטבלה תישאר במרכז המסך */
-  
-  } 
-  table {
-    width: 100%;
-  }
-  
-  .mat-mdc-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  td, th {
-    width: 25%;
-  }
-  .actions-cell {
-    white-space: nowrap; /* מניעת שורות לפקים */
-  }
-  
-  .actions-cell div {
-    display: flex;
-    align-items: center;
-  }
-  
-  
+.example-sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+

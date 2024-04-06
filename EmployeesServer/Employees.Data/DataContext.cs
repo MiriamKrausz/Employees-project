@@ -11,6 +11,8 @@ namespace Employees.Data
 
         public DbSet<Position> Positions { get; set; }
 
+        public DbSet<EmployeePosition> EmployeePositions { get; set; }
+        public DbSet<User>users { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Employee__db");

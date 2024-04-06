@@ -13,8 +13,7 @@ namespace Employees.Core.DTOs
         public string Gender { get; set; } //Male / Female
         public DateTime DateOfBirth { get; set; }
         public DateTime BeginningOfWork { get; set; }
-        
-       
+           
         public bool IsActive { get; set; }
         public List<EmployeePositionDto> Positions { get; set; }
 
