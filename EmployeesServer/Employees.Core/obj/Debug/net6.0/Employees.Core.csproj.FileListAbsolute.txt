@@ -22,3 +22,15 @@ D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.Core\obj\Debug
 D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.Core\obj\Debug\net6.0\refint\Employees.Core.dll
 D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.Core\obj\Debug\net6.0\Employees.Core.pdb
 D:\תשפד\תרגיל פרקטיקום\EmployeesServer\Employees.Core\obj\Debug\net6.0\ref\Employees.Core.dll
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\bin\Debug\net6.0\Employees.Core.deps.json
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\bin\Debug\net6.0\Employees.Core.dll
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\bin\Debug\net6.0\Employees.Core.pdb
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\Employees.Core.csproj.AssemblyReference.cache
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\Employees.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\Employees.Core.AssemblyInfoInputs.cache
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\Employees.Core.AssemblyInfo.cs
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\Employees.Core.csproj.CoreCompileInputs.cache
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\Employees.Core.dll
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\refint\Employees.Core.dll
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\Employees.Core.pdb
+D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Core\obj\Debug\net6.0\ref\Employees.Core.dll

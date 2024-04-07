@@ -1,9 +1,7 @@
 
-
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, AsyncValidatorFn, FormArray, FormBuilder, FormGroup,ValidationErrors,Validators } from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormGroup,ValidationErrors,Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Observable} from 'rxjs';
 import { Position } from '../../models/position.medel';
 import { EmployeeService } from '../../services/employee.service';
 import { PositionService } from '../../services/position.service';
@@ -20,6 +18,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-add-employee',
@@ -32,6 +31,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     { provide: DateAdapter, useClass: NativeDateAdapter }
   ]
 })
+
 export class AddEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   positions: Position[] = [];
@@ -51,61 +51,51 @@ export class AddEmployeeComponent implements OnInit {
 
   initializeForm(): void {
     this.employeeForm = this.fb.group({
-        firstName: ['', Validators.required],
-        surname: ['', Validators.required],
-        identityNumber: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
-        gender: ['', Validators.required],
-        dateOfBirth: ['', Validators.required,this.dateOfBirthValidator],
-        beginningOfWork: ['', Validators.required],
-        positions: this.fb.array([], Validators.required)
+      firstName: ['', Validators.required],
+      surname: ['', Validators.required],
+      identityNumber: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+      gender: ['', Validators.required],
+      dateOfBirth: ['', Validators.required,this.ageValidator],
+      beginningOfWork: ['', Validators.required],
+      positions: this.fb.array([], Validators.required)
     });
-}
-addPositionControl(positionId: number = null): void {
-  this.positionsFormArray.push(this.fb.group({
-    positionId: [positionId, Validators.required],
-    isAdministrative: [false, Validators.required],
-    entryDate: ['', Validators.required,this.entryDateValidator()]
-  }));
-}
+  }
 
- 
-  dateOfBirthValidator: AsyncValidatorFn = (control: AbstractControl): Observable<ValidationErrors | null> => {
-    return new Observable(observer => {
-        setTimeout(() => {
-            const dateOfBirth = new Date(control.value);
-            const today = new Date();
-            const age = today.getFullYear() - dateOfBirth.getFullYear();
-            if (age < 18) {
-                observer.next({ underage: true });
-            } else {
-                observer.next(null);
-            }
-            observer.complete();
-        }, 0);
-    });
-};
+  addPositionControl(positionId: number = null): void {
+    this.positionsFormArray.push(this.fb.group({
+      positionId: [positionId, Validators.required],
+      isAdministrative: [false, Validators.required],
+      entryDate: ['', [Validators.required,this.entryDateAfterWorkDateValidator]]
+    }));
+  }
+  
 
-entryDateValidator() {
-  return (control: AbstractControl): { [key: string]: any } | null => {
-    const entryDate = new Date(control.value);
-    const beginningOfWork = new Date(this.employeeForm.get('beginningOfWork').value);
-    return entryDate >= beginningOfWork ? null : { 'entryDateInvalid': true };
-  };
-}
-  // entryDateValidator: AsyncValidatorFn = (control: AbstractControl): Observable<ValidationErrors | null> => {
-  //   return new Observable(observer => {
-  //     setTimeout(() => {
-  //       const entryDate = new Date(control.value);
-  //       const beginningOfWork = new Date(this.employeeForm.get('beginningOfWork').value);
-  //       if (entryDate < beginningOfWork) {
-  //         observer.next({ invalidEntryDate: true });
-  //       } else {
-  //         observer.next(null);
-  //       }
-  //       observer.complete();
-  //     }, 0);
-  //   });
-  // };
+ ageValidator(control: AbstractControl): 
+  Observable<ValidationErrors | null> {
+  const birthDate = new Date(control.value);
+  const today = new Date();
+  const age = today.getFullYear() - birthDate.getFullYear();
+      if (age < 18) {
+    // Emit an object with a validation error.
+      return of({ underage: true});
+    }
+    // Emit null, to indicate no error occurred.
+    return of(null);
+  }
+
+  entryDateAfterWorkDateValidator(control: AbstractControl): 
+  Observable<ValidationErrors | null> {
+    const workDate = (control.root as FormGroup).get('beginningOfWork')?.value;
+    const entryDate = control.value;
+    console.log("workDate",workDate);
+    console.log("entryDate",entryDate);
+      if (workDate && entryDate && workDate.getTime() > entryDate.getTime()) {
+    // Emit an object with a validation error.
+      return of({ entryDateBeforeWorkDate: true});
+    }
+    // Emit null, to indicate no error occurred.
+    return of(null);
+  }
 
 
   get positionsFormArray(): FormArray {
@@ -118,11 +108,6 @@ entryDateValidator() {
       this.addPositionControl(); // Add initial empty position
     });
   }
-
- 
-
-
-
 
   removePositionControl(index: number): void {
     this.positionsFormArray.removeAt(index);
@@ -153,14 +138,12 @@ entryDateValidator() {
     }
   }
 
+
+
   cancel(): void {
     this.dialogRef.close();
   }
 }
-
-
-
-
 
 
 

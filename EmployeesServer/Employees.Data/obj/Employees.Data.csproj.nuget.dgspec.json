@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Data\\Employees.Data.csproj": {}
+    "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Data\\Employees.Data.csproj": {}
   },
   "projects": {
-    "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Core\\Employees.Core.csproj": {
+    "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Core\\Employees.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Core\\Employees.Core.csproj",
+        "projectUniqueName": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Core\\Employees.Core.csproj",
         "projectName": "Employees.Core",
-        "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Core\\Employees.Core.csproj",
+        "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Core\\Employees.Core.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Core\\obj\\",
+        "outputPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -69,14 +69,14 @@
         }
       }
     },
-    "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Data\\Employees.Data.csproj": {
+    "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Data\\Employees.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Data\\Employees.Data.csproj",
+        "projectUniqueName": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Data\\Employees.Data.csproj",
         "projectName": "Employees.Data",
-        "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Data\\Employees.Data.csproj",
+        "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Data\\Employees.Data.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Data\\obj\\",
+        "outputPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -97,8 +97,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Core\\Employees.Core.csproj": {
-                "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Core\\Employees.Core.csproj"
+              "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Core\\Employees.Core.csproj": {
+                "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Core\\Employees.Core.csproj"
               }
             }
           }

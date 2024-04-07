@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uPOnVct9N22J2+U+uJcqQQLRvQeztoSDaM1pTSt9xU3For4NG6I7Yflp7BZor5EflpbIJcbIU1qJA6QWeu3tTg==",
+  "dgSpecHash": "ZcMUKfrz0XRnQb2CYh0+RljsQesFJym/5Zw3dmZKxFQgmO0rQYKwarxNGh8SjZLOx9QJ/3YCIGYCH81qKm+ThA==",
   "success": true,
-  "projectFilePath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Core\\Employees.Core.csproj",
+  "projectFilePath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Core\\Employees.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"

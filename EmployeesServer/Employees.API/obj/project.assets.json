@@ -3142,11 +3142,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.API\\Employees.API.csproj",
+      "projectUniqueName": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.API\\Employees.API.csproj",
       "projectName": "Employees.API",
-      "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.API\\Employees.API.csproj",
+      "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.API\\Employees.API.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.API\\obj\\",
+      "outputPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3167,11 +3167,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Data\\Employees.Data.csproj": {
-              "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Data\\Employees.Data.csproj"
+            "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Data\\Employees.Data.csproj": {
+              "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Data\\Employees.Data.csproj"
             },
-            "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Service\\Employees.Service.csproj": {
-              "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\EmployeesServer\\Employees.Service\\Employees.Service.csproj"
+            "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Service\\Employees.Service.csproj": {
+              "projectPath": "D:\\תשפד\\תרגיל פרקטיקום\\employees-project\\EmployeesServer\\Employees.Service\\Employees.Service.csproj"
             }
           }
         }
