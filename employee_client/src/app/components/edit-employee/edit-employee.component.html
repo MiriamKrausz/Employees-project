@@ -29,7 +29,7 @@
             </mat-form-field>
 
             <!-- Date of Birth -->
-            <mat-form-field appearance="fill">
+             <mat-form-field appearance="fill">
                 <mat-label>Date of Birth</mat-label>
                 <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth"
                     placeholder="Enter Date of Birth">
@@ -37,7 +37,7 @@
                 <mat-datepicker #dobPicker></mat-datepicker>
                 <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('required')">Date of Birth is
                     required</mat-error>
-                <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('underage')">Employee must be at least 18 years old</mat-error>
+                    <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('underage')">Employee must be at least 18 years old</mat-error>
             </mat-form-field>
 
             <!-- Begging of work -->
@@ -79,18 +79,18 @@
                             </mat-form-field>
 
                             <!-- Entry Date -->
-                            <mat-form-field>
+                            <mat-form-field appearance="fill" class="position-field">
                                 <mat-label>Entry Date</mat-label>
-                                <input matInput [matDatepicker]="dobPicker" formControlName="entryDate"
-                                    placeholder="Enter Entry Date">
-                                <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #dobPicker></mat-datepicker>
+                                <input matInput [matDatepicker]="entryDatePicker" formControlName="entryDate"
+                                    placeholder="Enter Entry Date" class="position-input">
+                                <mat-datepicker-toggle matSuffix [for]="entryDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #entryDatePicker></mat-datepicker>
                                 <mat-error
                                     *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('required')">Entry
                                     Date is required</mat-error>
                                 <mat-error
-                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('invalidEntryDate')">Entry
-                                    Date must not be before the beginning of work date</mat-error>
+                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateInvalid')">Entry date cannot be before beginning of work date
+                                </mat-error>
                             </mat-form-field>
 
                             <!-- Administrative -->
