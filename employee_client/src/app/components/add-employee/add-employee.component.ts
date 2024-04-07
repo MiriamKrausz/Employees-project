@@ -61,13 +61,19 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  addPositionControl(positionId: number = null): void {
+  addPositionControl(): void {
     this.positionsFormArray.push(this.fb.group({
-      positionId: [positionId, Validators.required],
-      isAdministrative: [false, Validators.required],
-      entryDate: ['', [Validators.required,this.entryDateAfterWorkDateValidator]]
+      positionId: ['',Validators.required],
+      isAdministrative: [false],
+      entryDate: ['',[Validators.required, this.entryDateValidator()]]
     }));
   }
+  // addPositionControl(): void {
+  //   this.positionsFormArray.push(this.fb.group({
+  //     positionId: ['', Validators.required],
+  //     isManagement: [false],
+  //     entryDate: ['', [Validators.required, this.entryDateValidator()]]}));
+  // }
   
 
  ageValidator(control: AbstractControl): 
@@ -83,21 +89,36 @@ export class AddEmployeeComponent implements OnInit {
     return of(null);
   }
 
-  entryDateAfterWorkDateValidator(control: AbstractControl): 
-  Observable<ValidationErrors | null> {
-    const workDate = (control.root as FormGroup).get('beginningOfWork')?.value;
-    const entryDate = control.value;
-    console.log("workDate",workDate);
-    console.log("entryDate",entryDate);
-      if (workDate && entryDate && workDate.getTime() > entryDate.getTime()) {
-    // Emit an object with a validation error.
-      return of({ entryDateBeforeWorkDate: true});
-    }
-    // Emit null, to indicate no error occurred.
-    return of(null);
+  // ageValidator() {
+  //   return (control: AbstractControl): { [key: string]: any } | null => {
+  //     const birthDate = new Date(control.value);
+  // const today = new Date();
+  // const age = today.getFullYear() - birthDate.getFullYear();
+  //     return age >= 18 ? null : { 'underage': true };
+  //   };
+  // }
+
+  // entryDateAfterWorkDateValidator(control: AbstractControl): 
+  // Observable<ValidationErrors | null> {
+  //   const workDate = (control.root as FormGroup).get('beginningOfWork')?.value;
+  //   const entryDate = control.value;
+  //   console.log("workDate",workDate);
+  //   console.log("entryDate",entryDate);
+  //     if (workDate && entryDate && workDate.getTime() > entryDate.getTime()) {
+  //   // Emit an object with a validation error.
+  //     return of({ entryDateBeforeWorkDate: true});
+  //   }
+  //   // Emit null, to indicate no error occurred.
+  //   return of(null);
+  // }
+
+  entryDateValidator() {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const entryDate = new Date(control.value);
+      const workDate = new Date(this.employeeForm.get('beginningOfWork').value);
+      return entryDate >= workDate ? null : { 'entryDateInvalid': true };
+    };
   }
-
-
   get positionsFormArray(): FormArray {
     return this.employeeForm.get('positions') as FormArray;
   }

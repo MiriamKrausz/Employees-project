@@ -77,7 +77,7 @@
                             </mat-form-field>
 
                             <!-- Entry Date -->
-                            <mat-form-field>
+                            <!-- <mat-form-field>
                                 <mat-label>Entry Date</mat-label>
                                 <input matInput [matDatepicker]="dobPicker" formControlName="entryDate" placeholder="Enter Entry Date">
                                 <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
@@ -86,7 +86,22 @@
                                 <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('required')">Date of Birth is
                                     required</mat-error>
                                     <mat-error *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateBeforeWorkDate')">Entry date cannot be before beginning of work date</mat-error>
-                            </mat-form-field>                          
+                            </mat-form-field>                           -->
+                            <mat-form-field appearance="fill" class="position-field">
+                                <mat-label>Entry Date</mat-label>
+                                <input matInput [matDatepicker]="entryDatePicker" formControlName="entryDate"
+                                    placeholder="Enter Entry Date" class="position-input">
+                                <mat-datepicker-toggle matSuffix [for]="entryDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #entryDatePicker></mat-datepicker>
+                                <mat-error
+                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('required')">Entry
+                                    Date is required</mat-error>
+                                <mat-error
+                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateInvalid')">Entry date cannot be before beginning of work date
+                                </mat-error>
+    
+                            </mat-form-field>
+    
                             <!-- Administrative -->
                             <mat-slide-toggle formControlName="isAdministrative" color="primary">Administrative</mat-slide-toggle>
                         </div>
