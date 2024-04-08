@@ -1,4 +1,3 @@
-
 <div>
     <h2>Add New Employee</h2>
     <mat-dialog-content>
@@ -8,6 +7,8 @@
                 <mat-label>First Name</mat-label>
                 <input matInput formControlName="firstName" placeholder="Enter First Name">
                 <mat-error *ngIf="employeeForm.get('firstName').hasError('required')">First Name is required</mat-error>
+                <mat-error *ngIf="employeeForm.get('firstName').hasError('pattern')">First Name must contain only
+                    letters and be at least 2 characters long</mat-error>
             </mat-form-field>
 
             <!-- Surname -->
@@ -15,14 +16,19 @@
                 <mat-label>Surname</mat-label>
                 <input matInput formControlName="surname" placeholder="Enter Surname">
                 <mat-error *ngIf="employeeForm.get('surname').hasError('required')">Surname is required</mat-error>
+                <mat-error *ngIf="employeeForm.get('surname').hasError('pattern')">Surname must contain only letters and
+                    be at least 2 characters long</mat-error>
             </mat-form-field>
 
             <!-- IdentityNumber -->
             <mat-form-field appearance="fill">
-                <mat-label>IdentityNumber</mat-label>
-                <input matInput formControlName="identityNumber" placeholder="Enter identityNumber">
-                <mat-error *ngIf="employeeForm.get('identityNumber').hasError('required')">Identity Number is required</mat-error>
-                <mat-error *ngIf="employeeForm.get('identityNumber').hasError('pattern')">Identity Number must consist of 9 digits only</mat-error>
+                <mat-label>Identity Number</mat-label>
+                <input matInput formControlName="identityNumber" placeholder="Enter identity number">
+                <mat-error *ngIf="employeeForm.get('identityNumber').hasError('required')">Identity Number is
+                    required</mat-error>
+                <mat-error *ngIf="employeeForm.get('identityNumber').hasError('pattern')">Identity Number must consist
+                    of 9 digits only</mat-error>
+                    <mat-error *ngIf="employeeForm.get('identityNumber').hasError('duplicateIdentityNumber')">An employee with this Identity Number already exists</mat-error>
             </mat-form-field>
 
             <!-- Gender -->
@@ -35,8 +41,8 @@
                 <mat-error *ngIf="employeeForm.get('gender').hasError('required')">Gender is required</mat-error>
             </mat-form-field>
 
-              <!-- Date of Birth -->
-              <mat-form-field appearance="fill">
+            <!-- Date of Birth -->
+            <mat-form-field appearance="fill">
                 <mat-label>Date of Birth</mat-label>
                 <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth"
                     placeholder="Enter Date of Birth">
@@ -44,19 +50,28 @@
                 <mat-datepicker #dobPicker></mat-datepicker>
                 <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('required')">Date of Birth is
                     required</mat-error>
-                    <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('underage')">Employee must be at least 18 years old</mat-error>
+                <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('underage')">Employee must be at least 18
+                    years old</mat-error>
             </mat-form-field>
-            <!-- Begging of work -->
+
+            <!-- Beginning of work -->
             <mat-form-field appearance="fill">
-                <mat-label>Begging of work date</mat-label>
-                <input matInput [matDatepicker]="workStartDatePicker" formControlName="beginningOfWork" placeholder="Enter Beginning of work date">
+                <mat-label>Beginning of work date</mat-label>
+                <input matInput [matDatepicker]="workStartDatePicker" formControlName="beginningOfWork"
+                    placeholder="Enter Beginning of work date">
                 <mat-datepicker-toggle matSuffix [for]="workStartDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #workStartDatePicker></mat-datepicker>
-                <mat-error *ngIf="employeeForm.get('beginningOfWork').hasError('required')">Beginning of work date is required</mat-error>
+                <mat-error *ngIf="employeeForm.get('beginningOfWork').hasError('required')">Beginning of work date is
+                    required</mat-error>
+                <mat-error *ngIf="employeeForm.get('beginningOfWork').hasError('beginningOfWorkInvalid')">Beginning of
+                    work date cannot be before birth Date</mat-error>
+
             </mat-form-field>
+
             <!-- Positions -->
             <mat-accordion formArrayName="positions">
-                <button mat-raised-button color="primary" (click)="addPositionControl()">Add Position<mat-icon>add</mat-icon></button>
+                <button mat-raised-button color="primary" (click)="addPositionControl()">Add
+                    Position<mat-icon>add</mat-icon></button>
                 <mat-expansion-panel *ngFor="let position of positionsFormArray.controls; let i = index">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
@@ -68,14 +83,20 @@
                     </mat-expansion-panel-header>
                     <div [formGroupName]="i">
                         <div>
-                            <mat-form-field>
+                            <mat-form-field appearance="fill">
                                 <mat-label>Position</mat-label>
                                 <mat-select formControlName="positionId" placeholder="Select Position">
-                                    <mat-option *ngFor="let pos of positions" [value]="pos.id" [disabled]="isPositionDisabled(pos.id, i)">{{ pos.name }}</mat-option>
+                                    <mat-option *ngFor="let pos of positions" [value]="pos.id"
+                                        [disabled]="isPositionDisabled(pos.id, i)">{{ pos.name }}</mat-option>
+                                    <mat-option (click)="openOtherPositionDialog()" [value]="'OTHER'">{{ newPositionName
+                                        }}</mat-option>
                                 </mat-select>
-                                <mat-error *ngIf="positionsFormArray.controls[i].get('positionId').hasError('required')">Position is required</mat-error>
-                            </mat-form-field>
 
+
+                                <mat-error
+                                    *ngIf="positionsFormArray.controls[i].get('positionId').hasError('required')">Position
+                                    is required</mat-error>
+                            </mat-form-field>
                             <!-- Entry Date -->
                             <mat-form-field appearance="fill" class="position-field">
                                 <mat-label>Entry Date</mat-label>
@@ -87,12 +108,15 @@
                                     *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('required')">Entry
                                     Date is required</mat-error>
                                 <mat-error
-                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateInvalid')">Entry date cannot be before beginning of work date
-                                </mat-error>
+                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateBeforeBirthDate')">Entry
+                                    date cannot be before date of birth</mat-error>
+                                <mat-error
+                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateBeforeWorkDate')">Entry
+                                    date cannot be before beginning of work date</mat-error>
                             </mat-form-field>
-    
                             <!-- Administrative -->
-                            <mat-slide-toggle formControlName="isAdministrative" color="primary">Administrative</mat-slide-toggle>
+                            <mat-slide-toggle formControlName="isAdministrative"
+                                color="primary">Administrative</mat-slide-toggle>
                         </div>
                     </div>
                 </mat-expansion-panel>

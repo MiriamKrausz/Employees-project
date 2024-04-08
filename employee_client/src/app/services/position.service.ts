@@ -14,17 +14,7 @@ export class PositionService {
   getAllPositions(): Observable<Position[]> {
     return this.http.get<Position[]>(this.baseUrl)
   }
-//   getEmployeeById(id: number): Observable<Employee> {
-//     return this.http.get<Employee>(`${this.baseUrl}/${id}`)
-//  }
-//  addEmployee(employee:Employee): Observable<Employee> {
-//   return this.http.post<Employee>(this.baseUrl, employee)
-//  }
-//  updateEmployee(employee:Employee): Observable<Employee> {
-//   return this.http.put<Employee>(`${this.baseUrl}/${employee.id}`, employee)
-//  }
-
-//  deleteEmployee(id: number): Observable<void> {
-//   return this.http.delete<void>(`${this.baseUrl}/${id}`);
-// }
+  addPosition(Position:Position): Observable<Position> {
+    return this.http.post<Position>(this.baseUrl, Position)
+  }
 }

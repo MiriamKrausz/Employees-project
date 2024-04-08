@@ -5,6 +5,10 @@
       <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
   </mat-form-field>
 
+ <!-- progress-spinner  -->
+ <div class="center-spinner">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate" diameter="40"></mat-progress-spinner>
+  </div>
   <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -26,10 +26,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { formatDate } from '@angular/common';
 import { AddEmployeeComponent } from '../add-employee/add-employee.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   standalone: true,
-  imports:[MatTooltipModule,MatTableModule ,MatFormFieldModule,MatInputModule,MatToolbarModule,MatCheckboxModule,MatSortModule,MatPaginatorModule,MatExpansionModule,MatIconModule,MatDialogModule,MatButtonModule,MatSelectModule,ReactiveFormsModule,MatDatepickerModule,MatSlideToggleModule],
+  imports:[CommonModule,MatTooltipModule,MatTableModule,MatProgressSpinnerModule ,MatFormFieldModule,MatInputModule,MatToolbarModule,MatCheckboxModule,MatSortModule,MatPaginatorModule,MatExpansionModule,MatIconModule,MatDialogModule,MatButtonModule,MatSelectModule,ReactiveFormsModule,MatDatepickerModule,MatSlideToggleModule],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss'],
@@ -38,7 +41,7 @@ import { AddEmployeeComponent } from '../add-employee/add-employee.component';
     { provide: DateAdapter, useClass: NativeDateAdapter }
   ]
 })
-export class EmployeeListComponent implements AfterViewInit {
+export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
   displayedColumns: string[] = [
     'firstName',
@@ -47,6 +50,7 @@ export class EmployeeListComponent implements AfterViewInit {
     'beginningOfWork',
     'actions',
   ];
+  isLoading: boolean = false;
   dataSource: MatTableDataSource<Employee>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -59,26 +63,33 @@ export class EmployeeListComponent implements AfterViewInit {
         }
       });
     }
-  ngAfterViewInit() {this.getEmployees();}  
-      
+    
+  
+  ngOnInit(){
+    this.getEmployees();
+  }
   formatDate(date: any): string {
     // המרת התאריך לתבנית רצויה - יום/חודש/שנה
     return formatDate(date, 'yyyy-MM-dd', 'en');
   }
+
   getEmployees(): void {
+    this.isLoading = true;
     this._employeeService.getAllEmployees().subscribe({
       next: (res: Employee[]) => {
-       this.employees = res;
-        console.log("Employees fetched successfully:");
+        this.employees = res;
         this.dataSource = new MatTableDataSource(this.employees);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.isLoading = false;
       },
       error: (err) => {
         console.log(err);
-      }
+        this.isLoading = false;
+      },
     });
   }
+  
 
   editEmployee(employee: Employee): void {
     const dialogRef = this.dialog.open(EditEmployeeComponent, {

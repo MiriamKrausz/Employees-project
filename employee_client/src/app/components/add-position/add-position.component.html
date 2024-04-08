@@ -1,0 +1,10 @@
+
+<h1 mat-dialog-title>Add New Position</h1>
+<mat-form-field appearance="fill">
+  <mat-label>Position Name</mat-label>
+  <input matInput #newPositionInput>
+</mat-form-field>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="addPosition(newPositionInput.value)">Add</button>
+</mat-dialog-actions>

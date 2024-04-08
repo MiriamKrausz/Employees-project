@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar'; // import for snackbar
 import { Employee } from '../../models/employee.model';
 import { EmployeeService } from '../../services/employee.service';
@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter} from '@angular/material/core';
+import { AddPositionComponent } from '../add-position/add-position.component';
 
 
 @Component({
@@ -35,8 +36,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapt
 export class EditEmployeeComponent {
   employeeForm: FormGroup;
   positions: Position[] = [];
+  newPositionName:string="other";
 
   constructor(
+    private dialog: MatDialog,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditEmployeeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { employee: Employee },
@@ -54,12 +57,12 @@ export class EditEmployeeComponent {
   initializeForm(): void {
     const employee = this.data.employee;
     this.employeeForm = this.fb.group({
-      firstName: [employee.firstName, Validators.required],
-      surname: [employee.surname, Validators.required],
+      firstName: [employee.firstName, [Validators.required,Validators.pattern(/^[א-ת\u0590-\u05FEa-zA-Z]{2,}$/)]],
+      surname: [employee.surname, [Validators.required,Validators.pattern(/^[א-ת\u0590-\u05FEa-zA-Z]{2,}$/)]],
       identityNumber: [employee.identityNumber],
       gender: [employee.gender, Validators.required],
       dateOfBirth: [employee.dateOfBirth, [Validators.required, this.ageValidator()]],
-      beginningOfWork: [employee.beginningOfWork, Validators.required],
+      beginningOfWork: [employee.beginningOfWork,  [Validators.required,this.beginningOfWorkValidator()]],
       positions: this.fb.array([]) // Initialize positions array, modify if necessary
     });     
     
@@ -98,12 +101,35 @@ export class EditEmployeeComponent {
     };
   }
 
+    // Beginning of work date validator function
+    beginningOfWorkValidator() {
+      return (control: AbstractControl): { [key: string]: any } | null => {
+        const workDate = new Date(control.value);
+        const birthDate = new Date(this.employeeForm?.get('dateOfBirth').value);
+        console.log("workDate", workDate, "birthDate", birthDate);    
+        return workDate >= birthDate ? null : { 'beginningOfWorkInvalid': true };
+      };
+    }
+  
+  
   // Entry date validator function
   entryDateValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const entryDate = new Date(control.value);
-      const workDate = new Date(this.employeeForm.get('beginningOfWork').value);
-      return entryDate >= workDate ? null : { 'entryDateInvalid': true };
+      const workDate = new Date(this.employeeForm?.get('beginningOfWork').value);
+      const birthDate = new Date(this.employeeForm?.get('dateOfBirth').value);     
+  
+      // בדיקה אם תאריך הכניסה לעבודה קודם מתאריך הלידה
+      if (entryDate < birthDate) {
+        return { 'entryDateBeforeBirthDate': true };
+      }
+  
+      // בדיקה אם תאריך הכניסה לעבודה קודם מתאריך ההתחלה בעבודה
+      if (entryDate < workDate) {
+        return { 'entryDateBeforeWorkDate': true };
+      }
+  
+      return null;
     };
   }
 
@@ -126,6 +152,30 @@ export class EditEmployeeComponent {
   }
 
 
+
+  openOtherPositionDialog() {
+    const dialogRef = this.dialog.open(AddPositionComponent, {
+      width: '250px'
+    });
+  
+    dialogRef.afterClosed().subscribe(newPositionName => {
+      if (newPositionName) {
+        const newPosition: Position = {
+          id: 0,
+          name: newPositionName
+        };
+        this._positionService.addPosition(newPosition).subscribe((res) => {
+          // לאחר שהתפקיד נוסף בהצלחה, הוסף אותו גם למערך positions
+          this.positions.push(res); // הוסף את האובייקט עם id ו-name מעודכנים
+          // עדכן את אפשרויות הבחירה, כולל הערך שנבחר
+          const positionsFormArray = this.employeeForm.get('positions') as FormArray;
+          positionsFormArray.controls.forEach(control => {
+            control.patchValue({ positionId: res.id });
+          });
+        });
+      }
+    });
+  }
   // Function to handle form submission
   submit(): void {
     if (this.employeeForm.valid) {

@@ -1,8 +1,8 @@
 
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup,Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar'; // import for snackbar
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Position } from '../../models/position.medel';
 import { EmployeeService } from '../../services/employee.service';
 import { PositionService } from '../../services/position.service';
@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,11 +19,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialog } from '@angular/material/dialog';
+import { AddPositionComponent } from '../add-position/add-position.component';
+import { Employee } from '../../models/employee.model';
 
 @Component({
   selector: 'app-add-employee',
   standalone: true,
-  imports: [CommonModule,MatInputModule,MatFormFieldModule,MatCheckboxModule,MatExpansionModule,MatIconModule,MatDialogModule,MatButtonModule,MatSelectModule,ReactiveFormsModule,MatDatepickerModule,MatSlideToggleModule],
+  imports: [CommonModule, MatInputModule, MatFormFieldModule, MatCheckboxModule, MatExpansionModule, MatIconModule, MatDialogModule, MatButtonModule, MatSelectModule, ReactiveFormsModule, MatDatepickerModule, MatSlideToggleModule],
   templateUrl: './add-employee.component.html',
   styleUrls: ['./add-employee.component.scss'],
   providers: [
@@ -34,15 +37,18 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 export class AddEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
+  employees: Employee[] = [];
   positions: Position[] = [];
   errors: string[] = [];
+  newPositionName: string = "other";
 
   constructor(
+    private dialog: MatDialog,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddEmployeeComponent>,
     private _employeeService: EmployeeService,
     private _positionService: PositionService,
-    private _snackBar: MatSnackBar // Inject MatSnackBar
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -50,15 +56,16 @@ export class AddEmployeeComponent implements OnInit {
     this.loadPositions();
   }
 
+
   // Function to initialize form
   initializeForm(): void {
     this.employeeForm = this.fb.group({
-      firstName: ['', Validators.required],
-      surname: ['', Validators.required],
-      identityNumber: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+      firstName: ['', [Validators.required, Validators.pattern(/^[א-ת\u0590-\u05FEa-zA-Z]{2,}$/)]],
+      surname: ['', [Validators.required, Validators.pattern(/^[א-ת\u0590-\u05FEa-zA-Z]{2,}$/)]],
+      identityNumber: ['', [Validators.required, Validators.pattern(/^\d{9}$/), this.checkExistingEmployee()]],
       gender: ['', Validators.required],
-      dateOfBirth: ['', [Validators.required,this.ageValidator()]],
-      beginningOfWork: ['', Validators.required],
+      dateOfBirth: ['', [Validators.required, this.ageValidator()]],
+      beginningOfWork: ['', [Validators.required, this.beginningOfWorkValidator()]],
       positions: this.fb.array([], Validators.required)
     });
   }
@@ -66,11 +73,21 @@ export class AddEmployeeComponent implements OnInit {
   // Function to add a position control to the form array
   addPositionControl(): void {
     this.positionsFormArray.push(this.fb.group({
-      positionId: ['',Validators.required],
+      positionId: ['', Validators.required],
       isAdministrative: [false],
-      entryDate: ['',[Validators.required, this.entryDateValidator()]]
+      entryDate: ['', [Validators.required, this.entryDateValidator()]]
     }));
   }
+
+
+  checkExistingEmployee() {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      this._employeeService.getAllEmployees().subscribe((res) => {
+        this.employees = res;    
+      })
+      return this.employees.find(employee => employee.identityNumber === control.value) ? { 'duplicateIdentityNumber': true } : null;
+    };
+  };
 
   // Age validator function
   ageValidator() {
@@ -82,12 +99,33 @@ export class AddEmployeeComponent implements OnInit {
     };
   }
 
+  // Beginning of work date validator function
+  beginningOfWorkValidator() {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const workDate = new Date(control.value);
+      const birthDate = new Date(this.employeeForm?.get('dateOfBirth').value);
+      console.log("workDate", workDate, "birthDate", birthDate);
+      return workDate >= birthDate ? null : { 'beginningOfWorkInvalid': true };
+    };
+  }
+
   // Entry date validator function
   entryDateValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const entryDate = new Date(control.value);
-      const workDate = new Date(this.employeeForm.get('beginningOfWork').value);
-      return entryDate >= workDate ? null : { 'entryDateInvalid': true };
+      const workDate = new Date(this.employeeForm?.get('beginningOfWork').value);
+      const birthDate = new Date(this.employeeForm?.get('dateOfBirth').value);
+
+      // בדיקה אם תאריך הכניסה לעבודה קודם מתאריך הלידה
+      if (entryDate < birthDate) {
+        return { 'entryDateBeforeBirthDate': true };
+      }
+
+      // בדיקה אם תאריך הכניסה לעבודה קודם מתאריך ההתחלה בעבודה
+      if (entryDate < workDate) {
+        return { 'entryDateBeforeWorkDate': true };
+      }
+      return null;
     };
   }
 
@@ -103,6 +141,38 @@ export class AddEmployeeComponent implements OnInit {
       this.addPositionControl(); // Add initial empty position
     });
   }
+
+
+
+  openOtherPositionDialog() {
+    const dialogRef = this.dialog.open(AddPositionComponent, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(newPositionName => {
+      if (newPositionName) {
+        const newPosition: Position = {
+          id: 0,
+          name: newPositionName
+        };
+        this._positionService.addPosition(newPosition).subscribe((res) => {
+          // לאחר שהתפקיד נוסף בהצלחה, הוסף אותו גם למערך positions
+          this.positions.push(res); // הוסף את האובייקט עם id ו-name מעודכנים
+          // עדכן את אפשרויות הבחירה, כולל הערך שנבחר
+          const positionsFormArray = this.employeeForm.get('positions') as FormArray;
+          positionsFormArray.controls.forEach(control => {
+            control.patchValue({ positionId: res.id });
+          });
+        });
+      }
+    });
+  }
+
+
+  comparePositions(pos1: Position, pos2: Position): boolean {
+    return pos1 && pos2 ? pos1.id === pos2.id : pos1 === pos2;
+  }
+
 
   // Function to remove a position control from the form array
   removePositionControl(index: number): void {
@@ -123,7 +193,7 @@ export class AddEmployeeComponent implements OnInit {
       this._employeeService.addEmployee(formData).subscribe(() => {
         console.log('saving');
         this.openSnackBar('Employee added successfully'); // Open snackbar on success
-        this.dialogRef.close(true);    
+        this.dialogRef.close(true);
       }, error => {
         if (error.status === 400) {
           this.errors = error.error.errors;
@@ -151,14 +221,9 @@ export class AddEmployeeComponent implements OnInit {
       verticalPosition: 'bottom'
     });
   }
+
+ 
 }
-
-
-
-
-
-
-
 
 
 

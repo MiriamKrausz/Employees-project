@@ -2,21 +2,21 @@
     <h2>Edit Employee</h2>
     <mat-dialog-content>
         <form [formGroup]="employeeForm" (ngSubmit)="submit()" class="scrollable-form">
-            <!-- First Name -->
-            <mat-form-field appearance="fill">
-                <mat-label>First Name</mat-label>
-                <input matInput formControlName="firstName" placeholder="Enter First Name">
-                <mat-error *ngIf="employeeForm.get('firstName').hasError('required')">First Name is
-                    required</mat-error>
-            </mat-form-field>
+           <!-- First Name -->
+           <mat-form-field appearance="fill">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" placeholder="Enter First Name">
+            <mat-error *ngIf="employeeForm.get('firstName').hasError('required')">First Name is required</mat-error>
+            <mat-error *ngIf="employeeForm.get('firstName').hasError('pattern')">First Name must contain only letters and be at least 2 characters long</mat-error>
+        </mat-form-field>
 
-            <!-- Surname -->
-            <mat-form-field appearance="fill">
-                <mat-label>Surname</mat-label>
-                <input matInput formControlName="surname" placeholder="Enter Surname">
-                <mat-error *ngIf="employeeForm.get('surname').hasError('required')">Surname is
-                    required</mat-error>
-            </mat-form-field>
+        <!-- Surname -->
+        <mat-form-field appearance="fill">
+            <mat-label>Surname</mat-label>
+            <input matInput formControlName="surname" placeholder="Enter Surname">
+            <mat-error *ngIf="employeeForm.get('surname').hasError('required')">Surname is required</mat-error>
+            <mat-error *ngIf="employeeForm.get('surname').hasError('pattern')">Surname must contain only letters and be at least 2 characters long</mat-error>
+        </mat-form-field>
 
             <!-- Gender -->
             <mat-form-field appearance="fill">
@@ -40,15 +40,18 @@
                     <mat-error *ngIf="employeeForm.get('dateOfBirth').hasError('underage')">Employee must be at least 18 years old</mat-error>
             </mat-form-field>
 
-            <!-- Begging of work -->
+            <!-- Beginning of work -->
             <mat-form-field appearance="fill">
-                <mat-label>Begging of work date</mat-label>
+                <mat-label>Beginning of work date</mat-label>
                 <input matInput [matDatepicker]="workStartDatePicker" formControlName="beginningOfWork"
-                    placeholder="Enter Begging of work date">
+                    placeholder="Enter Beginning of work date">
                 <mat-datepicker-toggle matSuffix [for]="workStartDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #workStartDatePicker></mat-datepicker>
-                <mat-error *ngIf="employeeForm.get('beginningOfWork').hasError('required')">Begging of work date
-                    is required</mat-error>
+                <mat-error *ngIf="employeeForm.get('beginningOfWork').hasError('required')">Beginning of work date is
+                    required</mat-error>
+                <mat-error *ngIf="employeeForm.get('beginningOfWork').hasError('beginningOfWorkInvalid')">Beginning of
+                    work date cannot be before birth Date</mat-error>
+
             </mat-form-field>
 
             <!-- Positions -->
@@ -66,20 +69,18 @@
                     </mat-expansion-panel-header>
                     <div [formGroupName]="i">
                         <div>
-                            <mat-form-field>
+
+                            <mat-form-field appearance="fill">
                                 <mat-label>Position</mat-label>
                                 <mat-select formControlName="positionId" placeholder="Select Position">
-                                    <mat-option *ngFor="let pos of positions" [value]="pos.id"
-                                        [disabled]="isPositionDisabled(pos.id, i)">{{ pos.name }}</mat-option>
-                                </mat-select>
-
-                                <mat-error
-                                    *ngIf="positionsFormArray.controls[i].get('positionId').hasError('required')">Position
-                                    is required</mat-error>
+                                    <mat-option *ngFor="let pos of positions" [value]="pos.id" [disabled]="isPositionDisabled(pos.id, i)">{{ pos.name }}</mat-option>
+                                    <mat-option (click)="openOtherPositionDialog()" [value]="'OTHER'">{{ newPositionName }}</mat-option>
+                                </mat-select>                               
+                                <mat-error *ngIf="positionsFormArray.controls[i].get('positionId').hasError('required')">Position is required</mat-error>
                             </mat-form-field>
 
-                            <!-- Entry Date -->
-                            <mat-form-field appearance="fill" class="position-field">
+                             <!-- Entry Date -->
+                             <mat-form-field appearance="fill" class="position-field">
                                 <mat-label>Entry Date</mat-label>
                                 <input matInput [matDatepicker]="entryDatePicker" formControlName="entryDate"
                                     placeholder="Enter Entry Date" class="position-input">
@@ -89,10 +90,13 @@
                                     *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('required')">Entry
                                     Date is required</mat-error>
                                 <mat-error
-                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateInvalid')">Entry date cannot be before beginning of work date
-                                </mat-error>
+                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateBeforeBirthDate')">Entry
+                                    date cannot be before date of birth</mat-error>
+                                <mat-error
+                                    *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateBeforeWorkDate')">Entry
+                                    date cannot be before beginning of work date</mat-error>
                             </mat-form-field>
-
+                            
                             <!-- Administrative -->
                             <mat-slide-toggle formControlName="isAdministrative"
                                 color="primary">Administrative</mat-slide-toggle>
