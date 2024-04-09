@@ -1,10 +1,7 @@
 # Employee Management System - README
 
-<<<<<<< HEAD
-![Employees managment](../תרגיל%20פרקטיקום/employee_client/src/assets/images/screenshot.png)
-=======
-![Sample Screen](../../employees-project/employee_client/src/assets/images/screenshot.png)
->>>>>>> f085029fa9f9181030083589e23d03d3c04a7f91
+
+![Employees managment](../Employees-project/employee_client/src/assets/images/screenshot.png)
 
 ## Description
 
