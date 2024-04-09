@@ -1,6 +1,6 @@
 # Employee Management System - README
 
-![Sample Screen](./employees-project/employee_client/src/assets/images/screenshot.png)
+![Sample Screen](../../employees-project/employee_client/src/assets/images/screenshot.png)
 
 ## Description
 
@@ -49,4 +49,4 @@ The application utilizes various external design libraries, including Bootstrap,
 Contributions to the project are welcome. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
 ## License
-© 2024 Shevy Kossovsky & Miri Krausz All rights reserved. mk6764576@gmail.com
+© 2024 Miri Krausz All rights reserved. mk6764576@gmail.com
