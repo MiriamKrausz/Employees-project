@@ -11,7 +11,7 @@ import { Employee } from '../models/employee.model';
 export class EmployeeService {
   public baseUrl = "https://localhost:7109/api/Employees";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Retrieves all employees
   getAllEmployees(): Observable<Employee[]> {
@@ -75,7 +75,7 @@ export class EmployeeService {
         observer.next();
         observer.complete();
       }, error => {
-        observer.error(error); 
+        observer.error(error);
       });
     });
   }
@@ -87,5 +87,5 @@ export class EmployeeService {
     const month = dateObj.getMonth() + 1;
     const year = dateObj.getFullYear();
     return `${day}/${month}/${year}`;
-  }  
+  }
 }

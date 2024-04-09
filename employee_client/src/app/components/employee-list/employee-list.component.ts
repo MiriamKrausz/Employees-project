@@ -29,13 +29,14 @@ import { EmployeeDetailsComponent } from '../employee-details/employee-details.c
 
 @Component({
   standalone: true,
+
   imports: [CommonModule, MatTooltipModule, MatTableModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatCheckboxModule, MatSortModule, MatPaginatorModule, MatExpansionModule, MatIconModule, MatDialogModule, MatButtonModule, MatSelectModule, ReactiveFormsModule, MatDatepickerModule, MatSlideToggleModule],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss'],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
-    { provide: DateAdapter, useClass: NativeDateAdapter }
+    { provide: DateAdapter, useClass: NativeDateAdapter },
   ]
 })
 export class EmployeeListComponent implements OnInit {
@@ -52,24 +53,17 @@ export class EmployeeListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(public dialog: MatDialog, private _employeeService: EmployeeService, private snackBar: MatSnackBar) { }
-  addEmployee(): void {
-    const dialogRef = this.dialog.open(AddEmployeeComponent, { width: '500px', });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.getEmployees();
-      }
-    });
-  }
-
 
   ngOnInit() {
     this.getEmployees();
   }
+
+  // Function to format date in the desired pattern - 'yyyy-MM-dd'
   formatDate(date: any): string {
-    // המרת התאריך לתבנית רצויה - יום/חודש/שנה
     return formatDate(date, 'yyyy-MM-dd', 'en');
   }
 
+  // Function to retrieve all employees from the service
   getEmployees(): void {
     this.isLoading = true;
     this._employeeService.getAllEmployees().subscribe({
@@ -81,29 +75,34 @@ export class EmployeeListComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.log(err);
         this.isLoading = false;
       },
     });
   }
 
-
-  editEmployee(employee: Employee): void {
-    const dialogRef = this.dialog.open(EditEmployeeComponent, {
-      width: '600px',
-      height: '600px',
-      data: { employee }
-    });
+  // Function to open dialog for adding an employee
+  addEmployee(): void {
+    const dialogRef = this.dialog.open(AddEmployeeComponent, { width: '500px' });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.getEmployees();
       }
     });
   }
-  deleteEmployee(employee: Employee): void {
-    const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
-      data: { employee }
+
+  // Function to open dialog for editing an employee
+  editEmployee(employee: Employee): void {
+    const dialogRef = this.dialog.open(EditEmployeeComponent, { width: '600px', height: '600px', data: { employee } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getEmployees();
+      }
     });
+  }
+
+  // Function to open dialog for deleting an employee
+  deleteEmployee(employee: Employee): void {
+    const dialogRef = this.dialog.open(DeleteEmployeeComponent, { data: { employee } });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.openSnackBar('Employee deleted successfully', 'Close');
@@ -111,6 +110,8 @@ export class EmployeeListComponent implements OnInit {
       }
     });
   }
+
+  // Function to apply filter on the table data
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -118,27 +119,18 @@ export class EmployeeListComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  viewDetails(row: Employee, action: string): void {
-    if (action === 'edit') {
-      this.editEmployee(row);
-    }
-    else if (action == "delete")
-      this.deleteEmployee(row);
-    else {
-      const dialogRef = this.dialog.open(EmployeeDetailsComponent, {
-        width: '600px',
-        height: '400px',
-        data: { employee: row }
-      });
-    }
+
+  // Function to open dialog for viewing employee details
+  viewDetails(row: Employee): void {
+    this.dialog.open(EmployeeDetailsComponent, { data: { employee: row } }); 
   }
 
+  // Function to open snackbar
   openSnackBar(message: string, action: string): void {
     this.snackBar.open(message, action, {
       duration: 3000, 
       horizontalPosition: 'end',
-      verticalPosition: 'bottom',
+      verticalPosition: 'bottom'
     });
   }
-
 }

@@ -1,6 +1,4 @@
 ﻿
-using System.ComponentModel.DataAnnotations;
-
 namespace Employees.Core.Entities
 {
     public enum EGender
@@ -13,12 +11,12 @@ namespace Employees.Core.Entities
         public int Id { get; set; }//Running id  
         public string FirstName { get; set; }
         public string Surname { get; set; }
-        public string IdentityNumber { get; set; }//מספר תעודת זהות
+        public string IdentityNumber { get; set; }
         public EGender Gender { get; set; } //Male / Female
         public DateTime DateOfBirth { get; set; }
         public DateTime BeginningOfWork { get; set; }
-        public bool IsActive { get; set; }=true;
-        public List<EmployeePosition>? Positions { get; set; } //Many to many
+        public bool IsActive { get; set; } = true;
+        public List<EmployeePosition>? Positions { get; set; }
 
     }
 }

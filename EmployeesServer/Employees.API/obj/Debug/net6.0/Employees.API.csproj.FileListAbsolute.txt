@@ -153,7 +153,6 @@ D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employ
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\AutoMapper.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Humanizer.dll
-D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -163,7 +162,6 @@ D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employ
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.Identity.Client.dll
-D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
@@ -171,7 +169,6 @@ D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employ
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.OpenApi.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
-D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Newtonsoft.Json.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll

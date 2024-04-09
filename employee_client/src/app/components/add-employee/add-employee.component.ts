@@ -14,7 +14,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Position } from '../../models/position.medel';
+import { Position } from '../../models/position.model';
 import { EmployeeService } from '../../services/employee.service';
 import { PositionService } from '../../services/position.service';
 import { AddPositionComponent } from '../add-position/add-position.component';
@@ -82,12 +82,11 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  // Function to open dialog for adding other positions
-  openOtherPositionDialog() {
+  // Function to open add position dialog
+  openOtherPositionDialog(index: number) {
     const dialogRef = this.dialog.open(AddPositionComponent, {
       width: '250px'
     });
-
     dialogRef.afterClosed().subscribe(newPositionName => {
       if (newPositionName) {
         const newPosition: Position = {
@@ -96,10 +95,9 @@ export class AddEmployeeComponent implements OnInit {
         };
         this._positionService.addPosition(newPosition).subscribe((res) => {
           this.positions.push(res);
+          console.log("res", res);
           const positionsFormArray = this.employeeForm.get('positions') as FormArray;
-          positionsFormArray.controls.forEach(control => {
-            control.patchValue({ positionId: res.id });
-          });
+          positionsFormArray.at(index).patchValue({ positionId: res.id }); // Use 'at(index)' to target the specific form control
         });
       }
     });
@@ -129,7 +127,7 @@ export class AddEmployeeComponent implements OnInit {
         this.openSnackBar('Employee added successfully');
         this.dialogRef.close(true);
       }, error => {
-        if(error.status===400)
+        if (error.status === 400)
           this.openSnackBar(error.error.errors[0]); // Open snackbar on error
       });
     } else {

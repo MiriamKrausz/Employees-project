@@ -10,8 +10,8 @@ describe('DeleteEmployeeComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DeleteEmployeeComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(DeleteEmployeeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

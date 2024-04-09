@@ -97,27 +97,6 @@ namespace Employees.Data.Migrations
                     b.ToTable("Positions");
                 });
 
-            modelBuilder.Entity("Employees.Core.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("users");
-                });
-
             modelBuilder.Entity("Employees.Core.Entities.EmployeePosition", b =>
                 {
                     b.HasOne("Employees.Core.Entities.Employee", "Employee")

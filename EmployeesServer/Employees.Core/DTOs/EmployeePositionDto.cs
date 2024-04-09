@@ -5,7 +5,6 @@ namespace Employees.Core.DTOs
     {
         public PositionDto Position { get; set; }
         public bool IsAdministrative { get; set; }
-
         public DateTime EntryDate { get; set; }
     }
 }

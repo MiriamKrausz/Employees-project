@@ -10,8 +10,8 @@ describe('AddPositionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AddPositionComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(AddPositionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -5,11 +5,8 @@ using Employees.Core.DTOs;
 using Employees.Core.Entities;
 using Employees.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+
 
 namespace Employees.API.Controllers
 {
@@ -47,7 +44,7 @@ namespace Employees.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] EmployeePostModel employee)
         {
-            var validationErrors = await ValidateEmployeeAsync(employee,true);
+            var validationErrors = await ValidateEmployeeAsync(employee, true);
             if (validationErrors.Any()) return BadRequest(new ErrorResponse { Errors = validationErrors });
             var employeeToAdd = _mapper.Map<Employee>(employee);
             employeeToAdd.Positions = new List<EmployeePosition>();
@@ -87,24 +84,24 @@ namespace Employees.API.Controllers
             return NoContent();
         }
 
-        private async Task<List<string>> ValidateEmployeeAsync(EmployeePostModel employee, bool isPostRequest=false)
+        private async Task<List<string>> ValidateEmployeeAsync(EmployeePostModel employee, bool isPostRequest = false)
         {
             var errors = new List<string>();
 
             // Check if the date of birth is valid (the employee must be 18 years or older)
-            if (DateTime.Now.AddYears(-18) < employee.DateOfBirth){errors.Add("Employee must be 18 years or older.");}
-            
+            if (DateTime.Now.AddYears(-18) < employee.DateOfBirth) { errors.Add("Employee must be 18 years or older."); }
+
             // Check if the beginning of work is not later than the date of birth
-            if (employee.BeginningOfWork < employee.DateOfBirth) {errors.Add("Beginning of work cannot be earlier than date of birth.");}
-           
+            if (employee.BeginningOfWork < employee.DateOfBirth) { errors.Add("Beginning of work cannot be earlier than date of birth."); }
+
             // Check if the IdentityNumber consists only of digits and is 9 characters long
-            if (!Regex.IsMatch(employee.IdentityNumber, @"^\d+$")|| employee.IdentityNumber.Length != 9){errors.Add("Identity number must consist of 9 digits only.");}
+            if (!Regex.IsMatch(employee.IdentityNumber, @"^\d+$") || employee.IdentityNumber.Length != 9) { errors.Add("Identity number must consist of 9 digits only."); }
 
             // Adding first name and surname validation
-            if (!Regex.IsMatch(employee.FirstName, @"^[א-ת\u0590-\u05FEa-zA-Z]{2,}$")){ errors.Add("First name must consist of at least two letters, in English or Hebrew.");}
-            
-            if (!Regex.IsMatch(employee.Surname, @"^[א-ת\u0590-\u05FEa-zA-Z]{2,}$")){errors.Add("Surname must consist of at least two letters, in English or Hebrew.");}
-                     
+            if (!Regex.IsMatch(employee.FirstName, @"^[א-ת\u0590-\u05FEa-zA-Z]{2,}$")) { errors.Add("First name must consist of at least two letters, in English or Hebrew."); }
+
+            if (!Regex.IsMatch(employee.Surname, @"^[א-ת\u0590-\u05FEa-zA-Z]{2,}$")) { errors.Add("Surname must consist of at least two letters, in English or Hebrew."); }
+
             // Check if EntryDate is not later than BeginningOfWork
             foreach (var position in employee.Positions)
             {
@@ -144,6 +141,6 @@ namespace Employees.API.Controllers
         {
             public List<string> Errors { get; set; }
         }
-    }   
+    }
 }
 

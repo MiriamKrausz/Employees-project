@@ -16,7 +16,7 @@ import { AddPositionComponent } from '../add-position/add-position.component';
 import { Employee } from '../../models/employee.model';
 import { EmployeeService } from '../../services/employee.service';
 import { PositionService } from '../../services/position.service';
-import { Position } from '../../models/position.medel';
+import { Position } from '../../models/position.model';
 @Component({
   selector: 'app-edit-employee',
   standalone: true,
@@ -32,7 +32,7 @@ import { Position } from '../../models/position.medel';
 export class EditEmployeeComponent {
   employeeForm: FormGroup;
   positions: Position[] = [];
-  newPositionName: string = "other";;
+  newPositionName: string = "other";
   constructor(
     private dialog: MatDialog,
     private fb: FormBuilder,
@@ -137,7 +137,7 @@ export class EditEmployeeComponent {
   }
 
   // Function to open add position dialog
-  openOtherPositionDialog() {
+  openOtherPositionDialog(index: number) {
     const dialogRef = this.dialog.open(AddPositionComponent, {
       width: '250px'
     });
@@ -148,13 +148,10 @@ export class EditEmployeeComponent {
           name: newPositionName
         };
         this._positionService.addPosition(newPosition).subscribe((res) => {
-          // After position is successfully added, update positions array
           this.positions.push(res);
-          // Update selection options, including the selected value
+          console.log("res", res);
           const positionsFormArray = this.employeeForm.get('positions') as FormArray;
-          positionsFormArray.controls.forEach(control => {
-            control.patchValue({ positionId: res.id });
-          });
+          positionsFormArray.at(index).patchValue({ positionId: res.id }); // Use 'at(index)' to target the specific form control
         });
       }
     });
@@ -173,8 +170,8 @@ export class EditEmployeeComponent {
           this.openSnackBar('Employee updated successfully'); // Open snackbar on success
           this.dialogRef.close(true);
         }, error => {
-          if(error.status === 400)         
-              this.openSnackBar(error.error.errors[0]); // Open snackbar on error
+          if (error.status === 400)
+            this.openSnackBar(error.error.errors[0]); // Open snackbar on error
         });
       }, error => {
         this.openSnackBar('Error getting employee by ID'); // Open snackbar on error
@@ -188,10 +185,10 @@ export class EditEmployeeComponent {
   // Function to open snackbar
   openSnackBar(message: string): void {
     this._snackBar.open(message, 'Close', {
-      duration: 5000, // Duration in milliseconds
+      duration: 3000, // Duration in milliseconds
       horizontalPosition: 'end', // Positioning the snackbar
       verticalPosition: 'bottom',
-     
+
     });
   }
 

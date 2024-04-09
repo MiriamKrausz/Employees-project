@@ -1,5 +1,4 @@
-﻿using Employees.Core.DTOs;
-using Employees.Core.Entities;
+﻿using Employees.Core.Entities;
 using Employees.Core.Repositories;
 using Employees.Core.Services;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +41,7 @@ namespace Employees.Data.Repositories
             foreach (var newPosition in employee.Positions)
             {
                 var existingPosition = updatedEmployee.Positions.FirstOrDefault(p => p.PositionId == newPosition.PositionId);
-                    _context.Entry(existingPosition).CurrentValues.SetValues(newPosition);
+                _context.Entry(existingPosition).CurrentValues.SetValues(newPosition);
             }
             await _context.SaveChangesAsync();
             return updatedEmployee;

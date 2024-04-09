@@ -1,19 +1,25 @@
-<mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ employee.firstName }} {{ employee.surname }}</mat-card-title>
-      <mat-card-subtitle>ID: {{ employee.id }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p><strong>Identity Number:</strong> {{ employee.identityNumber }}</p>
-      <p><strong>Gender:</strong> {{ employee.gender }}</p>
-      <p><strong>Date of Birth:</strong> {{ employee.dateOfBirth | date }}</p>
-      <p><strong>Beginning of Work:</strong> {{ employee.beginningOfWork | date }}</p>
-      <p><strong>Positions:</strong></p>
-      <ul>
-        <li *ngFor="let position of employee.positions">
-          {{ position.position.name }} ({{ position.entryDate | date }}){{ position.isAdministrative ? ' - Administrative' : '' }}
-        </li>
-      </ul>
-    </mat-card-content>
-  </mat-card>
-  
+<mat-card [ngStyle]="cardStyles">
+  <mat-card-header>
+    <mat-card-title>{{ employee.firstName }} {{ employee.surname }}</mat-card-title>
+    <button mat-icon-button color="warn" (click)="closeDialog()">
+      <mat-icon class="close">close</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <p><mat-icon>perm_identity</mat-icon><strong>Identity Number:</strong> {{ employee.identityNumber }}</p>
+    <p><mat-icon>person</mat-icon><strong>Gender:</strong> {{ employee.gender }}</p>
+    <p><mat-icon>cake</mat-icon><strong>Date of Birth:</strong> {{ employee.dateOfBirth | date }}</p>
+    <p><mat-icon>work</mat-icon><strong>Beginning of Work:</strong> {{ employee.beginningOfWork | date }}</p>
+    <p><strong>Positions:</strong></p>
+    <ul>
+      <li *ngFor="let position of employee.positions">
+        <span class="material-symbols-outlined">
+          next_week
+        </span> {{ position.position.name }} ({{ position.entryDate | date }}){{ position.isAdministrative ? '
+        -Administrative' : '' }}
+      </li>
+    </ul>
+  </mat-card-content>
+  <mat-card-actions [ngStyle]="actionsStyles">
+  </mat-card-actions>
+</mat-card>
