@@ -17,11 +17,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EmployeeListComponent } from '../employee-list/employee-list.component';
+import { MatDialog } from '@angular/material/dialog';
+import { EmployeeListComponent } from '../employee/employee-list/employee-list.component';
 import { PositionService } from '../../services/position.service';
 import { Employee } from '../../models/employee.model';
 import { Position } from '../../models/position.model';
 import { EmployeeService } from '../../services/employee.service';
+import { DeletePositionComponent } from '../position/delete-position/delete-position.component';
+
 
 
 /**
@@ -63,7 +66,7 @@ export class TopBarComponent implements OnInit {
   employees: Employee[] = [];
   sortedEmployees: Employee[] = [];
 
-  constructor(private _employeeService: EmployeeService, private _positionService: PositionService, private snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, private _employeeService: EmployeeService, private _positionService: PositionService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.filteredEmployees = this.employeesName.valueChanges.pipe(
@@ -131,6 +134,30 @@ export class TopBarComponent implements OnInit {
     return this.positions.map(position => position.name.toLowerCase())
       .filter(option => option.includes(filterValue));
   }
+  // Function to open dialog for deleting position
+  deletePositionDialog(position: Position): void {
+    const dialogRef = this.dialog.open(DeletePositionComponent, {
+      data: { positionName: position.name }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deletePosition(position.id);
+      }
+    });
+  }
+
+  // Function to delete position
+  deletePosition(positionId: number): void {
+    this._positionService.deletePosition(positionId).subscribe({
+      next: () => {
+        this.openSnackBar('Position deleted successfully', 'close');
+        this.getPositions();
+      },
+      error: err => {
+        this.openSnackBar(err, 'close');
+      }
+    });
+  }
 
   // Function to open snackbar
   openSnackBar(message: string, action: string): void {
@@ -140,4 +167,6 @@ export class TopBarComponent implements OnInit {
       verticalPosition: 'bottom'
     });
   }
+
+
 }

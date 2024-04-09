@@ -20,7 +20,7 @@
     </a>
 
     <!-- My Account Button -->
-    <button mat-icon-button matTooltip="My Account" [matMenuTriggerFor]="userAccountMenu" style="margin: 0 12px;">
+    <button mat-icon-button matTooltip="My Account" [matMenuTriggerFor]="userAccountMenu" style="margin: 0 12px; ">
         <mat-icon>account_circle</mat-icon>
     </button>
 
@@ -86,10 +86,10 @@
                 </mat-form-field>
                 <mat-nav-list>
                     <a mat-list-item routerLink="#" *ngFor="let position of positions">
-                        <span class="material-symbols-outlined" style="margin-right: 8px;">
-                            bookmark_manager
-                        </span>
-                        <span style="margin-right: 25px;">{{ position.name }}</span>
+                        <button mat-icon-button (click)="deletePositionDialog(position)" matTooltip="Delete Position">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <span>{{ position.name }}</span>
                     </a>
                 </mat-nav-list>
             </mat-expansion-panel>

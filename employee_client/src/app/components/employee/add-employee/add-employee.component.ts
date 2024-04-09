@@ -14,11 +14,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Position } from '../../models/position.model';
-import { EmployeeService } from '../../services/employee.service';
-import { PositionService } from '../../services/position.service';
-import { AddPositionComponent } from '../add-position/add-position.component';
-import { Employee } from '../../models/employee.model';
+import { Position } from '../../../models/position.model';
+import { EmployeeService } from '../../../services/employee.service';
+import { PositionService } from '../../../services/position.service';
+import { AddPositionComponent } from '../../position/add-position/add-position.component';
+import { Employee } from '../../../models/employee.model';
 
 @Component({
   selector: 'app-add-employee',
@@ -95,7 +95,6 @@ export class AddEmployeeComponent implements OnInit {
         };
         this._positionService.addPosition(newPosition).subscribe((res) => {
           this.positions.push(res);
-          console.log("res", res);
           const positionsFormArray = this.employeeForm.get('positions') as FormArray;
           positionsFormArray.at(index).patchValue({ positionId: res.id }); // Use 'at(index)' to target the specific form control
         });

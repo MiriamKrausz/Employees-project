@@ -12,11 +12,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
-import { AddPositionComponent } from '../add-position/add-position.component';
-import { Employee } from '../../models/employee.model';
-import { EmployeeService } from '../../services/employee.service';
-import { PositionService } from '../../services/position.service';
-import { Position } from '../../models/position.model';
+import { AddPositionComponent } from '../../position/add-position/add-position.component';
+import { Employee } from '../../../models/employee.model';
+import { EmployeeService } from '../../../services/employee.service';
+import { PositionService } from '../../../services/position.service';
+import { Position } from '../../../models/position.model';
 @Component({
   selector: 'app-edit-employee',
   standalone: true,

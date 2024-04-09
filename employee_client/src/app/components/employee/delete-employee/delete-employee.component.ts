@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { EmployeeService } from '../../services/employee.service';
-import { Employee } from '../../models/employee.model';
+import { EmployeeService } from '../../../services/employee.service';
+import { Employee } from '../../../models/employee.model';
 @Component({
   selector: 'app-delete-employee',
   standalone: true,

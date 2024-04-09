@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Employee } from '../../models/employee.model';
+import { Employee } from '../../../models/employee.model';
 @Component({
   selector: 'app-employee-details',
   standalone: true,
