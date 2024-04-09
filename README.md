@@ -1,7 +1,7 @@
 # Employee Management System - README
 
 
-![Employees managment](/Employees-project/employee_client/src/assets/images/screenshot.png)
+![Employees managment](/employee_client/src/assets/images/screenshot.png)
 
 ## Description
 
