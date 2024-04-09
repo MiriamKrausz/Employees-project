@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import * as XLSX from 'xlsx'; // Importing xlsx library for Excel manipulation
-import { saveAs } from 'file-saver'; // Importing file-saver library for file download
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import { Employee } from '../models/employee.model';
 
 @Injectable({
@@ -10,24 +10,35 @@ import { Employee } from '../models/employee.model';
 })
 export class EmployeeService {
   public baseUrl = "https://localhost:7109/api/Employees";
-  constructor(private http: HttpClient) {
-  }
+
+  constructor(private http: HttpClient) {}
+
+  // Retrieves all employees
   getAllEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.baseUrl)
-  }
-  getEmployeeById(id: number): Observable<Employee> {
-    return this.http.get<Employee>(`${this.baseUrl}/${id}`)
-  }
-  addEmployee(employee: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.baseUrl, employee)
-  }
-  updateEmployee(employee: Employee): Observable<Employee> {
-    return this.http.put<Employee>(`${this.baseUrl}/${employee.id}`, employee)
+    return this.http.get<Employee[]>(this.baseUrl);
   }
 
+  // Retrieves an employee by ID
+  getEmployeeById(id: number): Observable<Employee> {
+    return this.http.get<Employee>(`${this.baseUrl}/${id}`);
+  }
+
+  // Adds a new employee
+  addEmployee(employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(this.baseUrl, employee);
+  }
+
+  // Updates an existing employee
+  updateEmployee(employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(`${this.baseUrl}/${employee.id}`, employee);
+  }
+
+  // Deletes an employee by ID
   deleteEmployee(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  // Exports employees to an Excel file
   exportEmployeesToExcel(): Observable<any> {
     return new Observable(observer => {
       this.getAllEmployees().subscribe((employees: Employee[]) => {
@@ -61,28 +72,20 @@ export class EmployeeService {
         const fileName = `employees_${formattedDate}.xlsx`;
         const excelBlob: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
         saveAs(excelBlob, fileName);
-        observer.next(); // Notify observers that the operation is complete
-        observer.complete(); // Complete the observable
+        observer.next();
+        observer.complete();
       }, error => {
-        observer.error(error); // Pass any errors to observers
+        observer.error(error); 
       });
     });
   }
 
-  // פונקציה לפורמט תאריך
+  // Formats a date into a string
   private formatDate(date: Date): string {
     const dateObj = new Date(date);
     const day = dateObj.getDate();
     const month = dateObj.getMonth() + 1;
     const year = dateObj.getFullYear();
-  
     return `${day}/${month}/${year}`;
-  }
-  
+  }  
 }
-  
-
-
-  
-
-

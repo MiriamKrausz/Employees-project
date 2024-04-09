@@ -10,11 +10,5 @@
 
         public DateTime EntryDate { get; set; }
 
-
-
-
-
-
-
     }
 }

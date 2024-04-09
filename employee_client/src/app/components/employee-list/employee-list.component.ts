@@ -1,42 +1,39 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
+import { CommonModule, formatDate } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddEmployeeComponent } from '../add-employee/add-employee.component';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employee.model';
 import { DeleteEmployeeComponent } from '../delete-employee/delete-employee.component';
 import { EditEmployeeComponent } from '../edit-employee/edit-employee.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule} from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { formatDate } from '@angular/common';
-import { AddEmployeeComponent } from '../add-employee/add-employee.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { CommonModule } from '@angular/common';
+import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
 
 
 @Component({
   standalone: true,
-  imports:[CommonModule,MatTooltipModule,MatTableModule,MatProgressSpinnerModule ,MatFormFieldModule,MatInputModule,MatToolbarModule,MatCheckboxModule,MatSortModule,MatPaginatorModule,MatExpansionModule,MatIconModule,MatDialogModule,MatButtonModule,MatSelectModule,ReactiveFormsModule,MatDatepickerModule,MatSlideToggleModule],
+  imports: [CommonModule, MatTooltipModule, MatTableModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatCheckboxModule, MatSortModule, MatPaginatorModule, MatExpansionModule, MatIconModule, MatDialogModule, MatButtonModule, MatSelectModule, ReactiveFormsModule, MatDatepickerModule, MatSlideToggleModule],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss'],
-    providers: [
+  providers: [
     { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
     { provide: DateAdapter, useClass: NativeDateAdapter }
   ]
@@ -54,18 +51,18 @@ export class EmployeeListComponent implements OnInit {
   dataSource: MatTableDataSource<Employee>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(public dialog: MatDialog,private _employeeService: EmployeeService){}
+  constructor(public dialog: MatDialog, private _employeeService: EmployeeService, private snackBar: MatSnackBar) { }
   addEmployee(): void {
-    const dialogRef = this.dialog.open(AddEmployeeComponent, { width: '500px',});
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-             this.getEmployees();
-        }
-      });
-    }
-    
-  
-  ngOnInit(){
+    const dialogRef = this.dialog.open(AddEmployeeComponent, { width: '500px', });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getEmployees();
+      }
+    });
+  }
+
+
+  ngOnInit() {
     this.getEmployees();
   }
   formatDate(date: any): string {
@@ -89,17 +86,17 @@ export class EmployeeListComponent implements OnInit {
       },
     });
   }
-  
+
 
   editEmployee(employee: Employee): void {
     const dialogRef = this.dialog.open(EditEmployeeComponent, {
-      width:'600px',
-      height:'600px',
+      width: '600px',
+      height: '600px',
       data: { employee }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-           this.getEmployees();
+        this.getEmployees();
       }
     });
   }
@@ -109,6 +106,7 @@ export class EmployeeListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.openSnackBar('Employee deleted successfully', 'Close');
         this.getEmployees();
       }
     });
@@ -119,5 +117,28 @@ export class EmployeeListComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }  
+  }
+  viewDetails(row: Employee, action: string): void {
+    if (action === 'edit') {
+      this.editEmployee(row);
+    }
+    else if (action == "delete")
+      this.deleteEmployee(row);
+    else {
+      const dialogRef = this.dialog.open(EmployeeDetailsComponent, {
+        width: '600px',
+        height: '400px',
+        data: { employee: row }
+      });
+    }
+  }
+
+  openSnackBar(message: string, action: string): void {
+    this.snackBar.open(message, action, {
+      duration: 3000, 
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
+    });
+  }
+
 }

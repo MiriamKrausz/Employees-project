@@ -90,8 +90,8 @@ builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(PostModelMappingPr
 //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
 //        };
 //    });
-builder.Services.AddSession();
-builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddSession();
+//builder.Services.AddDistributedMemoryCache();
 
 var app = builder.Build();
 
@@ -108,7 +108,7 @@ app.UseAuthorization();
 
 app.UseCors(policy);
 
-app.UseMiddleware<ValidationsMiddleware>();
+//app.UseMiddleware<ValidationsMiddleware>();
 
 
 Console.WriteLine("");

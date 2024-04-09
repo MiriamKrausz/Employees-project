@@ -1,9 +1,15 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using Employees.API.Models;
 using Employees.Core.DTOs;
 using Employees.Core.Entities;
 using Employees.Core.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Employees.API.Controllers
 {
@@ -14,6 +20,7 @@ namespace Employees.API.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly IPositionService _positionService;
         private readonly IMapper _mapper;
+
         public EmployeesController(IEmployeeService employeeService, IMapper mapper, IPositionService positionService)
         {
             _employeeService = employeeService;
@@ -21,16 +28,14 @@ namespace Employees.API.Controllers
             _positionService = positionService;
         }
 
-        // GET: api/<EmployeesController>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var employees = await _employeeService.GetEmployeesAsync();
             return Ok(_mapper.Map<IEnumerable<EmployeeDto>>(employees));
         }
-        // GET api/<EmployeesController>/5
-        [HttpGet("{id}")]
 
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var employee = await _employeeService.GetEmployeeByIdAsync(id);
@@ -42,53 +47,103 @@ namespace Employees.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] EmployeePostModel employee)
         {
-            // Check if the IdentityNumber already exists
-            var employees = await _employeeService.GetEmployeesAsync();
-            foreach (var existingEmployee in employees)
-            {
-                if (existingEmployee.IdentityNumber == employee.IdentityNumber)
-                {
-                    return BadRequest($"Employee with identity number {employee.IdentityNumber} already exists.");
-                }
-            }
+            var validationErrors = await ValidateEmployeeAsync(employee,true);
+            if (validationErrors.Any()) return BadRequest(new ErrorResponse { Errors = validationErrors });
             var employeeToAdd = _mapper.Map<Employee>(employee);
             employeeToAdd.Positions = new List<EmployeePosition>();
-            foreach(var position in employee.Positions)
+            foreach (var position in employee.Positions)
             {
                 Position pos = await _positionService.GetPositionByIdAsync(position.PositionId);
-                EmployeePosition employeePosition=_mapper.Map<EmployeePosition>(position);
+                EmployeePosition employeePosition = _mapper.Map<EmployeePosition>(position);
                 employeePosition.Position = pos;
                 employeeToAdd.Positions.Add(employeePosition);
             }
             await _employeeService.AddEmployeeAsync(employeeToAdd);
             return Ok(_mapper.Map<EmployeeDto>(employeeToAdd));
         }
-        // PUT api/<EmployeesController>/5
+
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] EmployeePostModel employee)
         {
             var employeeToUpdate = await _employeeService.GetEmployeeByIdAsync(id);
-            if (employeeToUpdate is null)
-            {
-                return NotFound();
-            }
+            if (employeeToUpdate == null) return NotFound();
+            var validationErrors = await ValidateEmployeeAsync(employee);
+            if (validationErrors.Any()) return BadRequest(new ErrorResponse { Errors = validationErrors });
             _mapper.Map(employee, employeeToUpdate);
             await _employeeService.UpdateEmployeeAsync(employeeToUpdate);
             var returnEmployee = await _employeeService.GetEmployeeByIdAsync(id);
             return Ok(_mapper.Map<EmployeeDto>(returnEmployee));
         }
 
-        // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             var employeeToDelete = await _employeeService.GetEmployeeByIdAsync(id);
-            if (employeeToDelete.IsActive==false)
+            if (employeeToDelete.IsActive == false)
             {
-                return NotFound("employee is no longer active");
+                return NotFound("Employee is no longer active");
             }
             await _employeeService.DeleteEmployeeAsync(id);
             return NoContent();
         }
-    }
+
+        private async Task<List<string>> ValidateEmployeeAsync(EmployeePostModel employee, bool isPostRequest=false)
+        {
+            var errors = new List<string>();
+
+            // Check if the date of birth is valid (the employee must be 18 years or older)
+            if (DateTime.Now.AddYears(-18) < employee.DateOfBirth){errors.Add("Employee must be 18 years or older.");}
+            
+            // Check if the beginning of work is not later than the date of birth
+            if (employee.BeginningOfWork < employee.DateOfBirth) {errors.Add("Beginning of work cannot be earlier than date of birth.");}
+           
+            // Check if the IdentityNumber consists only of digits and is 9 characters long
+            if (!Regex.IsMatch(employee.IdentityNumber, @"^\d+$")|| employee.IdentityNumber.Length != 9){errors.Add("Identity number must consist of 9 digits only.");}
+
+            // Adding first name and surname validation
+            if (!Regex.IsMatch(employee.FirstName, @"^[א-ת\u0590-\u05FEa-zA-Z]{2,}$")){ errors.Add("First name must consist of at least two letters, in English or Hebrew.");}
+            
+            if (!Regex.IsMatch(employee.Surname, @"^[א-ת\u0590-\u05FEa-zA-Z]{2,}$")){errors.Add("Surname must consist of at least two letters, in English or Hebrew.");}
+                     
+            // Check if EntryDate is not later than BeginningOfWork
+            foreach (var position in employee.Positions)
+            {
+                if (position.EntryDate < employee.BeginningOfWork)
+                {
+                    errors.Add("Entry date to position cannot be earlier than beginning of work.");
+                    break; // No need to continue checking if one error is found
+                }
+            }
+            // Check if any position is duplicated
+            var duplicatedPositions = employee.Positions
+                .GroupBy(p => p.PositionId)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+            if (duplicatedPositions.Any())
+            {
+                errors.Add($"Duplicate positions found: {string.Join(", ", duplicatedPositions)}");
+            }
+
+            // Check if the IdentityNumber already exists (only for POST requests)
+            if (isPostRequest)
+            {
+                var employees = await _employeeService.GetEmployeesAsync();
+                foreach (var existingEmployee in employees)
+                {
+                    if (existingEmployee.IdentityNumber == employee.IdentityNumber)
+                    {
+                        errors.Add($"Employee with identity number {employee.IdentityNumber} already exists.");
+                        break;
+                    }
+                }
+            }
+            return errors;
+        }
+        public class ErrorResponse
+        {
+            public List<string> Errors { get; set; }
+        }
+    }   
 }
+

@@ -1,25 +1,22 @@
 
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Position } from '../../models/position.medel';
-import { EmployeeService } from '../../services/employee.service';
-import { PositionService } from '../../services/position.service';
 import { CommonModule } from '@angular/common';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatDialog } from '@angular/material/dialog';
+import { Position } from '../../models/position.medel';
+import { EmployeeService } from '../../services/employee.service';
+import { PositionService } from '../../services/position.service';
 import { AddPositionComponent } from '../add-position/add-position.component';
 import { Employee } from '../../models/employee.model';
 
@@ -39,7 +36,6 @@ export class AddEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   employees: Employee[] = [];
   positions: Position[] = [];
-  errors: string[] = [];
   newPositionName: string = "other";
 
   constructor(
@@ -55,7 +51,6 @@ export class AddEmployeeComponent implements OnInit {
     this.initializeForm();
     this.loadPositions();
   }
-
 
   // Function to initialize form
   initializeForm(): void {
@@ -79,61 +74,6 @@ export class AddEmployeeComponent implements OnInit {
     }));
   }
 
-
-  checkExistingEmployee() {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      this._employeeService.getAllEmployees().subscribe((res) => {
-        this.employees = res;    
-      })
-      return this.employees.find(employee => employee.identityNumber === control.value) ? { 'duplicateIdentityNumber': true } : null;
-    };
-  };
-
-  // Age validator function
-  ageValidator() {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const birthDate = new Date(control.value);
-      const today = new Date();
-      const age = today.getFullYear() - birthDate.getFullYear();
-      return age >= 18 ? null : { 'underage': true };
-    };
-  }
-
-  // Beginning of work date validator function
-  beginningOfWorkValidator() {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const workDate = new Date(control.value);
-      const birthDate = new Date(this.employeeForm?.get('dateOfBirth').value);
-      console.log("workDate", workDate, "birthDate", birthDate);
-      return workDate >= birthDate ? null : { 'beginningOfWorkInvalid': true };
-    };
-  }
-
-  // Entry date validator function
-  entryDateValidator() {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const entryDate = new Date(control.value);
-      const workDate = new Date(this.employeeForm?.get('beginningOfWork').value);
-      const birthDate = new Date(this.employeeForm?.get('dateOfBirth').value);
-
-      // בדיקה אם תאריך הכניסה לעבודה קודם מתאריך הלידה
-      if (entryDate < birthDate) {
-        return { 'entryDateBeforeBirthDate': true };
-      }
-
-      // בדיקה אם תאריך הכניסה לעבודה קודם מתאריך ההתחלה בעבודה
-      if (entryDate < workDate) {
-        return { 'entryDateBeforeWorkDate': true };
-      }
-      return null;
-    };
-  }
-
-  // Getter for positions form array
-  get positionsFormArray(): FormArray {
-    return this.employeeForm.get('positions') as FormArray;
-  }
-
   // Function to load positions from service
   loadPositions(): void {
     this._positionService.getAllPositions().subscribe(positions => {
@@ -142,8 +82,7 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-
-
+  // Function to open dialog for adding other positions
   openOtherPositionDialog() {
     const dialogRef = this.dialog.open(AddPositionComponent, {
       width: '250px'
@@ -156,9 +95,7 @@ export class AddEmployeeComponent implements OnInit {
           name: newPositionName
         };
         this._positionService.addPosition(newPosition).subscribe((res) => {
-          // לאחר שהתפקיד נוסף בהצלחה, הוסף אותו גם למערך positions
-          this.positions.push(res); // הוסף את האובייקט עם id ו-name מעודכנים
-          // עדכן את אפשרויות הבחירה, כולל הערך שנבחר
+          this.positions.push(res);
           const positionsFormArray = this.employeeForm.get('positions') as FormArray;
           positionsFormArray.controls.forEach(control => {
             control.patchValue({ positionId: res.id });
@@ -168,11 +105,10 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-
+  // Function to compare positions
   comparePositions(pos1: Position, pos2: Position): boolean {
     return pos1 && pos2 ? pos1.id === pos2.id : pos1 === pos2;
   }
-
 
   // Function to remove a position control from the form array
   removePositionControl(index: number): void {
@@ -189,22 +125,16 @@ export class AddEmployeeComponent implements OnInit {
   submit(): void {
     if (this.employeeForm.valid) {
       const formData = this.employeeForm.value;
-      console.log("formData", formData);
       this._employeeService.addEmployee(formData).subscribe(() => {
-        console.log('saving');
-        this.openSnackBar('Employee added successfully'); // Open snackbar on success
+        this.openSnackBar('Employee added successfully');
         this.dialogRef.close(true);
       }, error => {
-        if (error.status === 400) {
-          this.errors = error.error.errors;
-        }
-        console.error('Error adding employee:', error);
-        this.openSnackBar('Error adding employee'); // Open snackbar on error
-        console.log('Server validation errors:', error.error.errors);
+        if(error.status===400)
+          this.openSnackBar(error.error.errors[0]); // Open snackbar on error
       });
     } else {
       this.employeeForm.markAllAsTouched();
-      console.error('Form is not valid');
+      this.openSnackBar('Form is not valid');
     }
   }
 
@@ -216,14 +146,57 @@ export class AddEmployeeComponent implements OnInit {
   // Function to open snackbar
   openSnackBar(message: string): void {
     this._snackBar.open(message, 'Close', {
-      duration: 3000, // Duration in milliseconds
-      horizontalPosition: 'end', // Positioning the snackbar
+      duration: 3000,
+      horizontalPosition: 'end',
       verticalPosition: 'bottom'
     });
   }
 
- 
-}
+  // Getter for positions form array
+  get positionsFormArray(): FormArray {
+    return this.employeeForm.get('positions') as FormArray;
+  }
 
+  // Age validator function
+  ageValidator() {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const birthDate = new Date(control.value);
+      const today = new Date();
+      const age = today.getFullYear() - birthDate.getFullYear();
+      return age >= 18 ? null : { 'underage': true };
+    };
+  }
+
+  // Beginning of work date validator function
+  beginningOfWorkValidator() {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const workDate = new Date(control.value);
+      const birthDate = new Date(this.employeeForm?.get('dateOfBirth').value);
+      return workDate >= birthDate ? null : { 'beginningOfWorkInvalid': true };
+    };
+  }
+
+  // Entry date validator function
+  entryDateValidator() {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const entryDate = new Date(control.value);
+      const workDate = new Date(this.employeeForm?.get('beginningOfWork').value);
+      if (entryDate < workDate) {
+        return { 'entryDateBeforeWorkDate': true };
+      }
+      return null;
+    };
+  }
+
+  // Function to check existing employee
+  checkExistingEmployee() {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      this._employeeService.getAllEmployees().subscribe((res) => {
+        this.employees = res;
+      })
+      return this.employees.find(employee => employee.identityNumber === control.value) ? { 'duplicateIdentityNumber': true } : null;
+    };
+  };
+}
 
 

@@ -1,28 +1,49 @@
-.example-spacer {
-    flex: 1 1 auto;
-  }
+// .example-spacer {
+//     flex: 1 1 auto;
+//   }
   .githubImg{
     width:40px;
     height:40px;
   }
 
-  .ex{
-    border: 2px solid pink;
-  }
-.example-container {
-  width: 500px;
-  height: 300px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+//   .ex{
+//     border: 2px solid pink;
+//   }
+// .example-container {
+//   width: 500px;
+//   height: 300px;
+//   border: 1px solid rgba(0, 0, 0, 0.5);
+// }
+
+// .example-sidenav-content {
+//   display: flex;
+//   height: 100%;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// .example-sidenav {
+//   padding: 20px;
+// }
+
+
+
+
+.toolbar-item-spacer {
+  flex: 1 1 auto;
 }
 
-.example-sidenav-content {
+.app-container {
+  height: 90%;
+  margin: 0;
+}  
+.app-sidenav {
+  width: 230px;
+}
+.app-sidenav-content {
   display: flex;
   height: 100%;
   align-items: center;
   justify-content: center;
-}
-
-.example-sidenav {
-  padding: 20px;
 }
 

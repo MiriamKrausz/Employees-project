@@ -1,11 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employee.model';
-import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatDialogModule} from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-delete-employee',
   standalone: true,
@@ -15,22 +14,28 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class DeleteEmployeeComponent {
   employee: Employee;
+
   constructor(
     public dialogRef: MatDialogRef<DeleteEmployeeComponent>,
-    @Inject(MAT_DIALOG_DATA) data: { employee: Employee },private _employeeService: EmployeeService){this.employee = data.employee;}
+    @Inject(MAT_DIALOG_DATA) data: { employee: Employee },
+    private _employeeService: EmployeeService
+  ) {
+    this.employee = data.employee;
+  }
 
+  // Function to confirm employee deletion
   onConfirmDelete(): void {
     this.dialogRef.close(true);
     this._employeeService.deleteEmployee(this.employee.id)
-    .subscribe(() => {
-      console.log("success");     
-    }, (error) => {
-      console.error('Error deleting employee:', error);
-    });
-    console.log("deleted");     
+      .subscribe(() => {
+        // Success callback
+      }, (error) => {
+        console.error('Error deleting employee:', error);
+      });
   }
 
+  // Function to cancel deletion
   onCancel(): void {
-    this.dialogRef.close(false); 
+    this.dialogRef.close(false);
   }
 }
