@@ -101,7 +101,7 @@ The user interface of the application includes a table displaying employee detai
 
 
 <!-- USAGE EXAMPLES -->
-## Additional Notes
+### Additional Notes
 
 - Input integrity validations have been implemented to ensure data consistency and accuracy.
 - Logical deletion is performed for deleted employees, and they will not appear in the main employee list.
