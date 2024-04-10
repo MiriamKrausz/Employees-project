@@ -52,9 +52,9 @@ The user interface of the application includes a table displaying employee detai
 
 ### Built With
 
-- [![Angular][../../employee_client/src/assets/images/angular.483x512.png]][https://angular.io/]
-- [![Angular Material][angular-material-icon]][https://material.angular.io/]
-- [![.NET 6][../../employee_client/src/assets/images/dotnet.256x256 (1).png]][https://dotnet.microsoft.com/en-us/]
+- [![Angular](https://img.icons8.com/color/48/000000/angularjs.png)](https://angular.io/)
+- [![Angular Material](https://img.icons8.com/color/48/000000/material-ui.png)](https://material.angular.io/)
+- [![.NET 6](https://img.icons8.com/color/48/000000/dot-net.png)](https://dotnet.microsoft.com/en-us/)
 
 
 
