@@ -1,49 +1,69 @@
-# Employee Management System - README
+# Employee List Management Application
 
 
 ![Employees managment](/employee_client/src/assets/images/screenshot.png)
 
+
+
 ## Description
 
-This is an employee management system built using Angular for the client-side and .NET 6 for the server-side. The application allows users to manage a list of employees, including adding, editing, and deleting employees. Users can also view employee details and have a personalized user area.
+This project is a web application built to manage employee lists for organizations. It allows users to view, add, edit, and delete employee information. The application consists of a front-end built with Angular 17 and Angular Material design libraries, and a back-end built with .NET 6.
 
-The application utilizes various external design libraries, including Bootstrap, Angular Material, MDB, and PrimeNG, to enhance its user interface and provide a visually appealing experience.
+## Tech Stack
+
+- Angular 17
+- Angular Material design libraries
+- .NET 6
+
+## Design
+
+The user interface of the application includes a table displaying employee details such as first name, last name, ID, and start date. Users can add, edit, and delete employees directly from the table. Additionally, the application provides options for adding additional information such as date of birth, gender, and roles dynamically. 
 
 ## Features
 
-- **User Authentication**: The application includes user authentication functionality, allowing users to register, log in, and manage their accounts securely.
-  
-- **User Roles and Permissions**: Different user roles and permissions are implemented to control access to various features and functionalities within the application.
+- View employee list
+- Add new employee
+- Edit employee details
+- Delete employee
+- Search functionality
+- Export employee list to Excel
 
-- **Employee Management**: Users can add new employees, edit existing employees, and delete employees as needed. Each employee can include details such as first name, last name, ID, and start date.
+## How to Run the Project
 
-- **Personalized User Area**: Registered users have access to a personalized user area where they can manage their saved employees, preferences, and account settings.
+### Front-end (Angular)
 
-- **Responsive Design**: The application is designed to be responsive, ensuring a seamless user experience across different devices and screen sizes.
+1. Clone the repository.
+2. Navigate to the `client` directory.
+3. Run `npm install` to install dependencies.
+4. Run `ng serve` to start the Angular development server.
+5. Access the application at `http://localhost:4200`.
 
-## Technologies Used
+### Back-end (.NET)
 
-- **Backend**: .NET 6 (C#)
-  
-- **Frontend**: Angular
-  
-- **Design Libraries**:
-  - Bootstrap
-  - Angular Material
-  - MDB (Material Design for Bootstrap)
-  - PrimeNG
+1. Navigate to the `server` directory.
+2. Open the solution in Visual Studio or any other preferred IDE.
+3. Ensure you have SQL Server installed and running.
+4. Run `update-database` command in the Package Manager Console to apply migrations and update the database schema.
+5. Run the application using IIS Express or any other preferred method.
+6. The API endpoints will be accessible at the specified routes.
 
-## Usage
+### Database
 
-1. Clone the repository to your local machine.
-```git clone https://github.com/YourUserName/YourProject.git```
-2. Navigate to the project directory.
-3. Install the necessary dependencies
-```npm install```
-4. Run the backend server.
-5. Run the frontend server.
-```ng s - overwrite```     
-6. Access the application through your web browser.
+To run the database migration, use the following command:
+
+**Note:** Ensure that you have appropriate permissions to run database migrations.
+
+## Deployment
+
+The application should be deployed to a cloud platform for accessibility. You can use platforms like Azure, AWS, or Heroku for deployment. Make sure to configure the deployment settings according to the platform requirements.
+
+## Additional Notes
+
+- Input integrity validations have been implemented to ensure data consistency and accuracy.
+- Logical deletion is performed for deleted employees, and they will not appear in the main employee list.
+- Emphasis has been placed on effective division of layers and writing clean, maintainable code.
+- The design of the application has been made user-friendly and visually appealing.
+
 
 ## Contributions
 

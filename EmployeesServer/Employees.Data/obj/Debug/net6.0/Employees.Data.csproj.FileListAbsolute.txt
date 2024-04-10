@@ -49,3 +49,20 @@ D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employ
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.pdb
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.genruntimeconfig.cache
 D:\תשפד\תרגיל פרקטיקום\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\ref\Employees.Data.dll
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\bin\Debug\net6.0\Employees.Data.deps.json
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\bin\Debug\net6.0\Employees.Data.runtimeconfig.json
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\bin\Debug\net6.0\Employees.Data.dll
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\bin\Debug\net6.0\Employees.Data.pdb
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\bin\Debug\net6.0\Employees.Core.dll
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\bin\Debug\net6.0\Employees.Core.pdb
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.csproj.AssemblyReference.cache
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.AssemblyInfoInputs.cache
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.AssemblyInfo.cs
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.csproj.CoreCompileInputs.cache
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.csproj.CopyComplete
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.dll
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\refint\Employees.Data.dll
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.pdb
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\Employees.Data.genruntimeconfig.cache
+D:\תשפד\employees-project\EmployeesServer\Employees.Data\obj\Debug\net6.0\ref\Employees.Data.dll
