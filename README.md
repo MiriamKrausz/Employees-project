@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/MiriamKrausz/employees-project">
-    <img src="](/employee_client/src/assets/images/screenshot.png" alt="Screenshot of the application width="80" height="80">
+    <img src="](../../employee_client/src/assets/images/screenshot.png" alt="Screenshot of the application width="80" height="80">
   </a>
 
   <h3 align="center">Employee List Management Application</h3>
