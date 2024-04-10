@@ -77,7 +77,7 @@ The user interface of the application includes a table displaying employee detai
    ```
 4. Run `ng serve` to start the Angular development server.
 
-5. Access the application at `http://localhost:4200`.
+5. Access the application at `http://localhost:4200`
 
 ### Back-end (.NET)
 
