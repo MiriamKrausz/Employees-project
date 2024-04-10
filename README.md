@@ -65,20 +65,19 @@ The user interface of the application includes a table displaying employee detai
 
 ### Installation
 
-1. Get a free API Key at [https://github.com/MiriamKrausz/employees-project](https://github.com/MiriamKrausz/employees-project)
-2. Clone the repository
+1. Clone the repository
    ```sh
    git clone https://github.com/MiriamKrausz/employees-project.git
    ```
-3. Navigate to the `client` directory.
+2. Navigate to the `client` directory.
 
-4. Install NPM packages to install dependencies
+3. Install NPM packages to install dependencies
    ```sh
    npm install
    ```
-5. Run `ng serve` to start the Angular development server.
+4. Run `ng serve` to start the Angular development server.
 
-6. Access the application at `http://localhost:4200`.
+5. Access the application at `http://localhost:4200`.
 
 ### Back-end (.NET)
 
