@@ -1,8 +1,5 @@
 
 <a name="Employee List Management Application"></a>
-
-<!-- PROJECT LOGO -->
-<br />
 <div align="center">
   <h1 align="center">Employees Management Application</h1>
 </div>
