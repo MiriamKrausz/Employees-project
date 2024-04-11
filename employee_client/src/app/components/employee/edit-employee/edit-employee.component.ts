@@ -122,7 +122,14 @@ export class EditEmployeeComponent {
   loadPositions(): void {
     this._positionService.getAllPositions().subscribe(positions => {
       this.positions = positions;
+      this.sortPositions();
     });
+  }
+
+
+  // Function to sort positions alphabetically
+  sortPositions(): void {
+    this.positions.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   // Function to remove a position control from the form array
@@ -148,8 +155,7 @@ export class EditEmployeeComponent {
           name: newPositionName
         };
         this._positionService.addPosition(newPosition).subscribe((res) => {
-          this.positions.push(res);
-          console.log("res", res);
+          this.loadPositions();
           const positionsFormArray = this.employeeForm.get('positions') as FormArray;
           positionsFormArray.at(index).patchValue({ positionId: res.id }); // Use 'at(index)' to target the specific form control
         });

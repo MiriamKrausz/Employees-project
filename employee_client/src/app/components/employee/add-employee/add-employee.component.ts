@@ -63,6 +63,7 @@ export class AddEmployeeComponent implements OnInit {
       beginningOfWork: ['', [Validators.required, this.beginningOfWorkValidator()]],
       positions: this.fb.array([], Validators.required)
     });
+    this.addPositionControl();// Add initial empty position
   }
 
   // Function to add a position control to the form array
@@ -78,8 +79,13 @@ export class AddEmployeeComponent implements OnInit {
   loadPositions(): void {
     this._positionService.getAllPositions().subscribe(positions => {
       this.positions = positions;
-      this.addPositionControl(); // Add initial empty position
+      this.sortPositions();    
     });
+  }
+
+  // Function to sort positions alphabetically
+  sortPositions(): void {
+    this.positions.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   // Function to open add position dialog
@@ -94,7 +100,7 @@ export class AddEmployeeComponent implements OnInit {
           name: newPositionName
         };
         this._positionService.addPosition(newPosition).subscribe((res) => {
-          this.positions.push(res);
+          this.loadPositions();
           const positionsFormArray = this.employeeForm.get('positions') as FormArray;
           positionsFormArray.at(index).patchValue({ positionId: res.id }); // Use 'at(index)' to target the specific form control
         });
