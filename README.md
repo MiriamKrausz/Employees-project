@@ -52,9 +52,15 @@ The user interface of the application includes a table displaying employee detai
 
 ### Built With
 
+<<<<<<< HEAD
 - [![Angular][../../employee_client/src/assets/images/angular.483x512.png]][https://angular.io/]
 - [![Angular Material][angular-material-icon]][https://material.angular.io/]
 - [![.NET 6][../../employee_client/src/assets/images/dotnet.256x256 (1).png]][https://dotnet.microsoft.com/en-us/]
+=======
+- [![Angular](https://img.icons8.com/color/48/000000/angularjs.png)](https://angular.io/)
+- [![Angular Material](https://img.icons8.com/color/48/000000/material-ui.png)](https://material.angular.io/)
+- [![.NET 6](https://img.icons8.com/color/48/000000/dot-net.png)](https://dotnet.microsoft.com/en-us/)
+>>>>>>> c31a146e1549bff59f4867b779a58f498a1c4fc8
 
 
 
@@ -65,20 +71,24 @@ The user interface of the application includes a table displaying employee detai
 
 ### Installation
 
+<<<<<<< HEAD
 1. Get a free API Key at [https://github.com/MiriamKrausz/employees-project](https://github.com/MiriamKrausz/employees-project)
 2. Clone the repository
+=======
+1. Clone the repository
+>>>>>>> c31a146e1549bff59f4867b779a58f498a1c4fc8
    ```sh
    git clone https://github.com/MiriamKrausz/employees-project.git
    ```
-3. Navigate to the `client` directory.
+2. Navigate to the `client` directory.
 
-4. Install NPM packages to install dependencies
+3. Install NPM packages to install dependencies
    ```sh
    npm install
    ```
-5. Run `ng serve` to start the Angular development server.
+4. Run `ng serve` to start the Angular development server.
 
-6. Access the application at `http://localhost:4200`.
+5. Access the application at `http://localhost:4200`
 
 ### Back-end (.NET)
 
@@ -112,10 +122,13 @@ The user interface of the application includes a table displaying employee detai
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions to the project are welcome. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request.**greatly appreciated**.
+Contributions to the project are welcome. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c31a146e1549bff59f4867b779a58f498a1c4fc8
 <!-- LICENSE -->
 ## License
 
