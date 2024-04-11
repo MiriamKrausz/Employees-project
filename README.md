@@ -111,8 +111,7 @@ The user interface of the application includes a table displaying employee detai
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions to the project are welcome. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request.**greatly appreciated**.
-
+Contributions to the project are welcome. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
 
 <!-- LICENSE -->
