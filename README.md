@@ -52,9 +52,11 @@ The user interface of the application includes a table displaying employee detai
 
 ### Built With
 
-- [![Angular17](https://img.icons8.com/color/24/000000/angularjs.png)](https://angular.io/)
-- [![Angular Material](https://img.icons8.com/color/24/000000/material-ui.png)](https://material.angular.io/)
-- [![.NET 6](https://img.icons8.com/color/24/000000/visual-studio.png)](https://dotnet.microsoft.com/en-us/)
+
+- [![Angular17](https://img.icons8.com/color/24/000000/angularjs.png)](https://angular.io/) Angular17
+- [![Angular Material](https://img.icons8.com/color/24/000000/material-ui.png)](https://material.angular.io/) Angular Material
+- [![.NET 6](https://img.icons8.com/color/24/000000/visual-studio.png)](https://dotnet.microsoft.com/en-us/) Visual Studio
+
 
 
 
