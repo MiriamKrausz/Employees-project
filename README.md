@@ -50,12 +50,12 @@ The user interface of the application includes a table displaying employee detai
 - Export employee list to Excel
 
 
-### Built With
+**Built With**
 
+- **Angular17:** [![Angular17](https://img.icons8.com/color/24/000000/angularjs.png)](https://angular.io/) Angular17
+- **Angular Material:** [![Angular Material](https://img.icons8.com/color/24/000000/material-ui.png)](https://material.angular.io/) Angular Material
+- **Visual Studio:** [![.NET 6](https://img.icons8.com/color/24/000000/visual-studio.png)](https://dotnet.microsoft.com/en-us/) Visual Studio
 
-- [![Angular17](https://img.icons8.com/color/24/000000/angularjs.png)](https://angular.io/) Angular17
-- [![Angular Material](https://img.icons8.com/color/24/000000/material-ui.png)](https://material.angular.io/) Angular Material
-- [![.NET 6](https://img.icons8.com/color/24/000000/visual-studio.png)](https://dotnet.microsoft.com/en-us/) Visual Studio
 
 
 
