@@ -25,8 +25,6 @@ import { Position } from '../../models/position.model';
 import { EmployeeService } from '../../services/employee.service';
 import { DeletePositionComponent } from '../position/delete-position/delete-position.component';
 
-
-
 /**
  * @title Filter autocomplete
  */
@@ -81,16 +79,14 @@ export class TopBarComponent implements OnInit {
     this.getPositions();
   }
 
-  // Function to download employees to excel
   downloadToexcel(): void {
     this._employeeService.exportEmployeesToExcel().subscribe({
-      next: (res) => {
+      next: () => {
         this.openSnackBar('The file was successfully downloaded', 'Close');
       }
     });
   }
 
-  // Function to retrieve all employees
   getEmployees(): void {
     this._employeeService.getAllEmployees().subscribe((res) => {
       this.employees = res;
@@ -98,21 +94,11 @@ export class TopBarComponent implements OnInit {
       this.sortEmployees();
     });
   }
-
-  // Function to retrieve all positions
   getPositions(): void {
     this._positionService.getAllPositions().subscribe((res) => {
       this.positions = res;
-      this.sortPositions();
     });
   }
-
-  // Function to sort positions alphabetically
-  sortPositions(): void {
-    this.positions.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  // Function to sort employees alphabetically by full name
   sortEmployees(): void {
     this.sortedEmployees.sort((a, b) => {
       const fullNameA = a.firstName.toLowerCase() + ' ' + a.surname.toLowerCase();
@@ -120,21 +106,17 @@ export class TopBarComponent implements OnInit {
       return fullNameA.localeCompare(fullNameB);
     });
   }
-
-  // Function to filter employees based on input value
   private _filterEmployees(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.sortedEmployees.map(employee => employee.firstName + ' ' + employee.surname)
       .filter(option => option.toLowerCase().includes(filterValue));
   }
-
-  // Function to filter positions based on input value
   private _filterPositions(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.positions.map(position => position.name.toLowerCase())
       .filter(option => option.includes(filterValue));
   }
-  // Function to open dialog for deleting position
+
   deletePositionDialog(position: Position): void {
     const dialogRef = this.dialog.open(DeletePositionComponent, {
       data: { positionName: position.name }
@@ -146,7 +128,6 @@ export class TopBarComponent implements OnInit {
     });
   }
 
-  // Function to delete position
   deletePosition(positionId: number): void {
     this._positionService.deletePosition(positionId).subscribe({
       next: () => {
@@ -159,7 +140,6 @@ export class TopBarComponent implements OnInit {
     });
   }
 
-  // Function to open snackbar
   openSnackBar(message: string, action: string): void {
     this.snackBar.open(message, action, {
       duration: 3000,

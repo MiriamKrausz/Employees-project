@@ -23,18 +23,14 @@ export class DeleteEmployeeComponent {
     this.employee = data.employee;
   }
 
-  // Function to confirm employee deletion
   onConfirmDelete(): void {
     this.dialogRef.close(true);
     this._employeeService.deleteEmployee(this.employee.id)
       .subscribe(() => {
-        // Success callback
       }, (error) => {
         console.error('Error deleting employee:', error);
       });
   }
-
-  // Function to cancel deletion
   onCancel(): void {
     this.dialogRef.close(false);
   }

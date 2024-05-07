@@ -47,8 +47,6 @@ export class EditEmployeeComponent {
     this.initializeForm();
     this.loadPositions();
   }
-
-  // Function to initialize form
   initializeForm(): void {
     const employee = this.data.employee;
     this.employeeForm = this.fb.group({
@@ -58,21 +56,18 @@ export class EditEmployeeComponent {
       gender: [employee.gender, Validators.required],
       dateOfBirth: [employee.dateOfBirth, [Validators.required, this.ageValidator()]],
       beginningOfWork: [employee.beginningOfWork, [Validators.required, this.beginningOfWorkValidator()]],
-      positions: this.fb.array([]) // Initialize positions array, modify if necessary
+      positions: this.fb.array([])
     });
 
-    // Initialize positions controls with default values
     if (employee.positions && employee.positions.length > 0) {
       employee.positions.forEach(position => {
         this.addPositionControl(position.position.id, position.isAdministrative, position.entryDate);
       });
     } else {
-      // Add default position if there are no positions
       this.addPositionControl();
     }
   }
 
-  // Function to add a position control to the form array
   addPositionControl(positionId: number = null, isAdministrative: boolean = false, entryDate: Date = null): void {
     this.positionsFormArray.push(this.fb.group({
       positionId: [positionId, Validators.required],
@@ -81,12 +76,10 @@ export class EditEmployeeComponent {
     }));
   }
 
-  // Getter for positions form array
   get positionsFormArray(): FormArray {
     return this.employeeForm.get('positions') as FormArray;
   }
 
-  // Age validator function
   ageValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const birthDate = new Date(control.value);
@@ -96,7 +89,6 @@ export class EditEmployeeComponent {
     };
   }
 
-  // Beginning of work date validator function
   beginningOfWorkValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const workDate = new Date(control.value);
@@ -105,12 +97,10 @@ export class EditEmployeeComponent {
     };
   }
 
-  // Entry date validator function
   entryDateValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const entryDate = new Date(control.value);
       const workDate = new Date(this.employeeForm?.get('beginningOfWork').value);
-      // Check if entry date is before work start date
       if (entryDate < workDate) {
         return { 'entryDateBeforeWorkDate': true };
       }
@@ -118,32 +108,19 @@ export class EditEmployeeComponent {
     };
   }
 
-  // Function to load positions from service
   loadPositions(): void {
     this._positionService.getAllPositions().subscribe(positions => {
       this.positions = positions;
-      this.sortPositions();
     });
   }
-
-
-  // Function to sort positions alphabetically
-  sortPositions(): void {
-    this.positions.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  // Function to remove a position control from the form array
   removePositionControl(index: number): void {
     this.positionsFormArray.removeAt(index);
   }
-
-  // Function to check if a position is disabled
   isPositionDisabled(positionId: number, index: number): boolean {
     const selectedPositions = this.employeeForm.value.positions.map((pos: any) => pos.positionId);
     return selectedPositions.includes(positionId) && selectedPositions.indexOf(positionId) !== index;
   }
 
-  // Function to open add position dialog
   openOtherPositionDialog(index: number) {
     const dialogRef = this.dialog.open(AddPositionComponent, {
       width: '250px'
@@ -157,13 +134,12 @@ export class EditEmployeeComponent {
         this._positionService.addPosition(newPosition).subscribe((res) => {
           this.loadPositions();
           const positionsFormArray = this.employeeForm.get('positions') as FormArray;
-          positionsFormArray.at(index).patchValue({ positionId: res.id }); // Use 'at(index)' to target the specific form control
+          positionsFormArray.at(index).patchValue({ positionId: res.id });
         });
       }
     });
   }
 
-  // Function to handle form submission
   submit(): void {
     if (this.employeeForm.valid) {
       const employeeId = this.data.employee.id;
@@ -173,32 +149,29 @@ export class EditEmployeeComponent {
           ...this.employeeForm.value
         };
         this._employeeService.updateEmployee(updatedEmployee).subscribe(() => {
-          this.openSnackBar('Employee updated successfully'); // Open snackbar on success
+          this.openSnackBar('Employee updated successfully');
           this.dialogRef.close(true);
         }, error => {
           if (error.status === 400)
-            this.openSnackBar(error.error.errors[0]); // Open snackbar on error
+            this.openSnackBar(error.error.errors[0]);
         });
       }, error => {
-        this.openSnackBar('Error getting employee by ID'); // Open snackbar on error
+        this.openSnackBar('Error getting employee by ID');
       });
     } else {
       this.employeeForm.markAllAsTouched();
-      this.openSnackBar('Form is not valid'); // Open snackbar if form is not valid
+      this.openSnackBar('Form is not valid');
     }
   }
 
-  // Function to open snackbar
   openSnackBar(message: string): void {
     this._snackBar.open(message, 'Close', {
-      duration: 3000, // Duration in milliseconds
-      horizontalPosition: 'end', // Positioning the snackbar
+      duration: 3000,
+      horizontalPosition: 'end',
       verticalPosition: 'bottom',
 
     });
   }
-
-  // Function to handle cancellation
   cancel(): void {
     this.dialogRef.close();
   }

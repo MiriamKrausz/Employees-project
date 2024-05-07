@@ -52,7 +52,6 @@ export class AddEmployeeComponent implements OnInit {
     this.loadPositions();
   }
 
-  // Function to initialize form
   initializeForm(): void {
     this.employeeForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.pattern(/^[א-ת\u0590-\u05FEa-zA-Z]{2,}$/)]],
@@ -63,10 +62,9 @@ export class AddEmployeeComponent implements OnInit {
       beginningOfWork: ['', [Validators.required, this.beginningOfWorkValidator()]],
       positions: this.fb.array([], Validators.required)
     });
-    this.addPositionControl();// Add initial empty position
+    this.addPositionControl();
   }
 
-  // Function to add a position control to the form array
   addPositionControl(): void {
     this.positionsFormArray.push(this.fb.group({
       positionId: ['', Validators.required],
@@ -75,20 +73,12 @@ export class AddEmployeeComponent implements OnInit {
     }));
   }
 
-  // Function to load positions from service
   loadPositions(): void {
     this._positionService.getAllPositions().subscribe(positions => {
       this.positions = positions;
-      this.sortPositions();    
     });
   }
 
-  // Function to sort positions alphabetically
-  sortPositions(): void {
-    this.positions.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  // Function to open add position dialog
   openOtherPositionDialog(index: number) {
     const dialogRef = this.dialog.open(AddPositionComponent, {
       width: '250px'
@@ -102,29 +92,21 @@ export class AddEmployeeComponent implements OnInit {
         this._positionService.addPosition(newPosition).subscribe((res) => {
           this.loadPositions();
           const positionsFormArray = this.employeeForm.get('positions') as FormArray;
-          positionsFormArray.at(index).patchValue({ positionId: res.id }); // Use 'at(index)' to target the specific form control
+          positionsFormArray.at(index).patchValue({ positionId: res.id });
         });
       }
     });
   }
 
-  // Function to compare positions
-  comparePositions(pos1: Position, pos2: Position): boolean {
-    return pos1 && pos2 ? pos1.id === pos2.id : pos1 === pos2;
-  }
-
-  // Function to remove a position control from the form array
   removePositionControl(index: number): void {
     this.positionsFormArray.removeAt(index);
   }
 
-  // Function to check if a position is disabled
   isPositionDisabled(positionId: number, index: number): boolean {
     const selectedPositions = this.employeeForm.value.positions.map((pos: any) => pos.positionId);
     return selectedPositions.includes(positionId) && selectedPositions.indexOf(positionId) !== index;
   }
 
-  // Function to handle form submission
   submit(): void {
     if (this.employeeForm.valid) {
       const formData = this.employeeForm.value;
@@ -133,7 +115,7 @@ export class AddEmployeeComponent implements OnInit {
         this.dialogRef.close(true);
       }, error => {
         if (error.status === 400)
-          this.openSnackBar(error.error.errors[0]); // Open snackbar on error
+          this.openSnackBar(error.error.errors[0]);
       });
     } else {
       this.employeeForm.markAllAsTouched();
@@ -141,12 +123,9 @@ export class AddEmployeeComponent implements OnInit {
     }
   }
 
-  // Function to handle cancellation
   cancel(): void {
     this.dialogRef.close();
   }
-
-  // Function to open snackbar
   openSnackBar(message: string): void {
     this._snackBar.open(message, 'Close', {
       duration: 3000,
@@ -155,12 +134,10 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  // Getter for positions form array
   get positionsFormArray(): FormArray {
     return this.employeeForm.get('positions') as FormArray;
   }
 
-  // Age validator function
   ageValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const birthDate = new Date(control.value);
@@ -170,7 +147,6 @@ export class AddEmployeeComponent implements OnInit {
     };
   }
 
-  // Beginning of work date validator function
   beginningOfWorkValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const workDate = new Date(control.value);
@@ -179,7 +155,6 @@ export class AddEmployeeComponent implements OnInit {
     };
   }
 
-  // Entry date validator function
   entryDateValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const entryDate = new Date(control.value);
@@ -191,7 +166,6 @@ export class AddEmployeeComponent implements OnInit {
     };
   }
 
-  // Function to check existing employee
   checkExistingEmployee() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       this._employeeService.getAllEmployees().subscribe((res) => {

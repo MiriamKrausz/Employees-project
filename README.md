@@ -37,7 +37,7 @@
 
 ![Employees managment](/employee_client/src/assets/images/screenshot.png)
 
-This project is a web application built to manage employee lists for organizations. It allows users to view, add, edit, and delete employee information. The application consists of a front-end built with Angular 17 and Angular Material design libraries, and a back-end built with .NET 6.
+This project is a web application built to manage employee lists for organizations. It allows users to view, add, edit, and delete employee information. The application consists of a front-end built with Angular 17 and Angular Material design libraries, and a back-end built with .NET 8.
 The user interface of the application includes a table displaying employee details such as first name, last name, ID, and start date. Users can add, edit, and delete employees directly from the table. Additionally, the application provides options for adding additional information such as date of birth, gender, and positions dynamically.
 
 ## Features
@@ -54,7 +54,7 @@ The user interface of the application includes a table displaying employee detai
 
 - **Angular17:** &nbsp;&nbsp; [![Angular17](https://img.icons8.com/color/30/000000/angularjs.png)](https://angular.io/)
 - **Angular Material:** &nbsp;&nbsp; [![Angular Material](https://img.icons8.com/color/30/000000/material-ui.png)](https://material.angular.io/)
-- **.NET 6** &nbsp;&nbsp; [![.NET 6](https://img.icons8.com/color/30/000000/visual-studio.png)](https://dotnet.microsoft.com/en-us/)
+- **.NET 8** &nbsp;&nbsp; [![.NET 8](https://img.icons8.com/color/30/000000/visual-studio.png)](https://dotnet.microsoft.com/en-us/)
 
 
 

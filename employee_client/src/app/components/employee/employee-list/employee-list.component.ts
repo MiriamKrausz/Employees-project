@@ -57,13 +57,10 @@ export class EmployeeListComponent implements OnInit {
   ngOnInit() {
     this.getEmployees();
   }
-
-  // Function to format date in the desired pattern - 'yyyy-MM-dd'
   formatDate(date: any): string {
     return formatDate(date, 'yyyy-MM-dd', 'en');
   }
 
-  // Function to retrieve all employees from the service
   getEmployees(): void {
     this.isLoading = true;
     this._employeeService.getAllEmployees().subscribe({
@@ -74,13 +71,12 @@ export class EmployeeListComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: () => {
         this.isLoading = false;
       },
     });
   }
 
-  // Function to open dialog for adding an employee
   addEmployee(): void {
     const dialogRef = this.dialog.open(AddEmployeeComponent, { width: '500px' });
     dialogRef.afterClosed().subscribe(result => {
@@ -90,7 +86,6 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  // Function to open dialog for editing an employee
   editEmployee(employee: Employee): void {
     const dialogRef = this.dialog.open(EditEmployeeComponent, { width: '600px', height: '600px', data: { employee } });
     dialogRef.afterClosed().subscribe(result => {
@@ -100,7 +95,6 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  // Function to open dialog for deleting an employee
   deleteEmployee(employee: Employee): void {
     const dialogRef = this.dialog.open(DeleteEmployeeComponent, { data: { employee } });
     dialogRef.afterClosed().subscribe(result => {
@@ -111,7 +105,6 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  // Function to apply filter on the table data
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -120,15 +113,13 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-  // Function to open dialog for viewing employee details
   viewDetails(row: Employee): void {
-    this.dialog.open(EmployeeDetailsComponent, { data: { employee: row } }); 
+    this.dialog.open(EmployeeDetailsComponent, { data: { employee: row } });
   }
 
-  // Function to open snackbar
   openSnackBar(message: string, action: string): void {
     this.snackBar.open(message, action, {
-      duration: 3000, 
+      duration: 3000,
       horizontalPosition: 'end',
       verticalPosition: 'bottom'
     });

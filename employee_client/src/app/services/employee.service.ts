@@ -12,33 +12,22 @@ export class EmployeeService {
   public baseUrl = "https://localhost:7109/api/Employees";
 
   constructor(private http: HttpClient) { }
-
-  // Retrieves all employees
   getAllEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.baseUrl);
   }
-
-  // Retrieves an employee by ID
   getEmployeeById(id: number): Observable<Employee> {
     return this.http.get<Employee>(`${this.baseUrl}/${id}`);
   }
-
-  // Adds a new employee
   addEmployee(employee: Employee): Observable<Employee> {
     return this.http.post<Employee>(this.baseUrl, employee);
   }
-
-  // Updates an existing employee
   updateEmployee(employee: Employee): Observable<Employee> {
     return this.http.put<Employee>(`${this.baseUrl}/${employee.id}`, employee);
   }
-
-  // Deletes an employee by ID
   deleteEmployee(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  // Exports employees to an Excel file
   exportEmployeesToExcel(): Observable<any> {
     return new Observable(observer => {
       this.getAllEmployees().subscribe((employees: Employee[]) => {
@@ -79,8 +68,6 @@ export class EmployeeService {
       });
     });
   }
-
-  // Formats a date into a string
   private formatDate(date: Date): string {
     const dateObj = new Date(date);
     const day = dateObj.getDate();

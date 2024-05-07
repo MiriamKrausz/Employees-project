@@ -2,7 +2,6 @@
     <h2>Edit Employee</h2>
     <mat-dialog-content>
         <form [formGroup]="employeeForm" class="scrollable-form">
-            <!-- First Name -->
             <mat-form-field appearance="fill">
                 <mat-label>First Name</mat-label>
                 <input matInput formControlName="firstName" placeholder="Enter First Name">
@@ -11,7 +10,6 @@
                     letters and be at least 2 characters long</mat-error>
             </mat-form-field>
 
-            <!-- Surname -->
             <mat-form-field appearance="fill">
                 <mat-label>Surname</mat-label>
                 <input matInput formControlName="surname" placeholder="Enter Surname">
@@ -20,7 +18,6 @@
                     be at least 2 characters long</mat-error>
             </mat-form-field>
 
-            <!-- Gender -->
             <mat-form-field appearance="fill">
                 <mat-label>Gender</mat-label>
                 <mat-select formControlName="gender" placeholder="Select Gender">
@@ -30,7 +27,6 @@
                 <mat-error *ngIf="employeeForm.get('gender').hasError('required')">Gender is required</mat-error>
             </mat-form-field>
 
-            <!-- Date of Birth -->
             <mat-form-field appearance="fill">
                 <mat-label>Date of Birth</mat-label>
                 <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth"
@@ -43,7 +39,6 @@
                     years old</mat-error>
             </mat-form-field>
 
-            <!-- Beginning of work -->
             <mat-form-field appearance="fill">
                 <mat-label>Beginning of work date</mat-label>
                 <input matInput [matDatepicker]="workStartDatePicker" formControlName="beginningOfWork"
@@ -57,7 +52,6 @@
 
             </mat-form-field>
 
-            <!-- Positions -->
             <mat-accordion formArrayName="positions">
 
                 <mat-expansion-panel *ngFor="let position of positionsFormArray.controls; let i = index">
@@ -86,8 +80,6 @@
                                     *ngIf="positionsFormArray.controls[i].get('positionId').hasError('required')">Position
                                     is required</mat-error>
                             </mat-form-field>
-
-                            <!-- Entry Date -->
                             <mat-form-field appearance="fill" class="position-field">
                                 <mat-label>Entry Date</mat-label>
                                 <input matInput [matDatepicker]="entryDatePicker" formControlName="entryDate"
@@ -101,8 +93,6 @@
                                     *ngIf="positionsFormArray.controls[i].get('entryDate').hasError('entryDateBeforeWorkDate')">Entry
                                     date cannot be before beginning of work date</mat-error>
                             </mat-form-field>
-
-                            <!-- Administrative -->
                             <mat-slide-toggle formControlName="isAdministrative"
                                 color="primary">Administrative</mat-slide-toggle>
                         </div>

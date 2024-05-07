@@ -4,48 +4,26 @@
     </button>
     <span>Menu</span>
     <span class="toolbar-item-spacer"></span>
-
-    <!-- Download to Excel Button -->
-    <span class="material-symbols-outlined" (click)="downloadToexcel()" matTooltip="Download to Excel"
-        style="cursor: pointer; margin: 0 12px;">
+    <span class="material-symbols-outlined" style="font-size: 24px;" (click)="downloadToexcel()"
+        matTooltip="Download to Excel" style="cursor: pointer;font-size: 35px; margin: 0 12px;">
         download
     </span>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <!-- GitHub Link -->
-    <a href="https://github.com/MiriamKrausz/employees-project" [matMenuTriggerFor]="userAccountMenu" title="GitHub"
-        target="_blank" matTooltip="GitHub" style="margin: 0 12px;">
-        <img src="../../../assets/images/white-github.png" class="githubImg"
-            style="width: 24px; height: 24px; margin-top: 10px;" />
+    <a href="https://github.com/MiriamKrausz/employees-project" title="GitHub" target="_blank" matTooltip="GitHub"
+        style="margin: 0 12px;">
+        <img src="../../../assets/images/white-github.png" class="githubImg" style=" width: 35px;
+        height: 35px; margin-top: 10px;" />
     </a>
-
-    <!-- My Account Button -->
-    <button mat-icon-button matTooltip="My Account" [matMenuTriggerFor]="userAccountMenu" style="margin: 0 12px; ">
-        <mat-icon>account_circle</mat-icon>
-    </button>
-
-    <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below" style="min-width: 200px;">
-        <button mat-menu-item routerLink="#">
-            <mat-icon>person</mat-icon><span>My Account</span>
-        </button>
-        <button mat-menu-item routerLink="#">
-            <mat-icon>settings</mat-icon><span>Settings</span>
-        </button>
-        <button mat-menu-item routerLink="#">
-            <mat-icon>help</mat-icon><span>Help</span>
-        </button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item routerLink="#">
-            <mat-icon>exit_to_app</mat-icon>Logout
-        </button>
-    </mat-menu>
 </mat-toolbar>
-
 
 <mat-sidenav-container class="app-container">
     <mat-sidenav #sidenav mode="side" [class.mat-elevation-z4]="true" class="app-sidenav">
+        <button mat-icon-button class="close-button" (click)="sidenav.toggle()">
+            <mat-icon>close</mat-icon>
+        </button>
         <mat-nav-list>
-            <mat-list-item routerLink="#">
+            <mat-list-item>
                 <mat-icon>dashboard</mat-icon><span>Managing Employees</span>
             </mat-list-item>
             <mat-expansion-panel [class.mat-elevation-z0]="true">
@@ -70,7 +48,6 @@
                     </a>
                 </mat-nav-list>
             </mat-expansion-panel>
-
             <mat-expansion-panel [class.mat-elevation-z0]="true">
                 <mat-expansion-panel-header>
                     View Positions
@@ -100,7 +77,7 @@
     </mat-sidenav-content>
 </mat-sidenav-container>
 <mat-toolbar color="primary" class="footer-toolbar">
-    <span class="footer-text">All rights reserved &copy; 2024 Miriam Krausz</span>
+    <span class="footer-text">&copy; All rights reserved 2024 Miriam Krausz</span>
     <span class="footer-spacer"></span>
     <span class="footer-text">Contact me : mk6764576&#64;gmail.com</span>
 </mat-toolbar>
